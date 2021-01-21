@@ -1,0 +1,8 @@
+Compartment_Stage	Mean
+Bulksoil_before_sowing	0.0800952463067991
+Bulksoil_Reproductive	0.122536941555746
+Bulksoil_Vegetative	0.158561675176424
+Rhizosphere_Reproductive	0.3493428183923
+Rhizosphere_Vegetative	0.188268414643757
+Root_Reproductive	0.587708570966391
+Root_Vegetative	0.433868781405253
