@@ -304,6 +304,13 @@ for (i in 1 : (len -1)) {
 }
 
 colnames(sig) <- c("Group1", "Group2", "Significance")
+sig <- as.data.frame(sig)
+sig$Significance <- as.numeric(as.character(sig$Significance))
+sig$Sig <- ifelse(sig$Significance < 0.05, TRUE, FALSE)
+sig$FDR <- p.adjust(sig$Significance, method = "fdr")
+sig$Sig_FDR <- ifelse(as.numeric(as.character(sig$FDR)) < 0.05,
+                        TRUE, FALSE)
+
 write.table(sig, "Figure_3c_ASV_sig.txt", quote = F, sep = "\t", row.names = F)
 
 sig <- c()
@@ -319,4 +326,11 @@ for (i in 1 : (len -1)) {
 }
 
 colnames(sig) <- c("Group1", "Group2", "Significance")
+sig <- as.data.frame(sig)
+sig$Significance <- as.numeric(as.character(sig$Significance))
+sig$Sig <- ifelse(sig$Significance < 0.05, TRUE, FALSE)
+sig$FDR <- p.adjust(sig$Significance, method = "fdr")
+sig$Sig_FDR <- ifelse(as.numeric(as.character(sig$FDR)) < 0.05,
+                        TRUE, FALSE)
+
 write.table(sig, "Figure_3c_TAX_sig.txt", quote = F, sep = "\t", row.names = F)

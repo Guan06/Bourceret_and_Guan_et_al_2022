@@ -1,22 +1,22 @@
-Group1	Group2	Significance
-Rhizosphere_Reproductive	Root_Reproductive	6.96325694146333e-78
-Rhizosphere_Reproductive	Bulksoil_Reproductive	8.85540403552697e-24
-Rhizosphere_Reproductive	Bulksoil_before_sowing	7.8810588507345e-28
-Rhizosphere_Reproductive	Bulksoil_Vegetative	7.8810588507345e-28
-Rhizosphere_Reproductive	Rhizosphere_Vegetative	2.52979893826375e-78
-Rhizosphere_Reproductive	Root_Vegetative	0.0039156204764268
-Root_Reproductive	Bulksoil_Reproductive	7.8810588507345e-28
-Root_Reproductive	Bulksoil_before_sowing	7.8810588507345e-28
-Root_Reproductive	Bulksoil_Vegetative	7.8810588507345e-28
-Root_Reproductive	Rhizosphere_Vegetative	4.12355143743358e-80
-Root_Reproductive	Root_Vegetative	3.06022850460207e-67
-Bulksoil_Reproductive	Bulksoil_before_sowing	3.10797074170385e-28
-Bulksoil_Reproductive	Bulksoil_Vegetative	3.10797074170385e-28
-Bulksoil_Reproductive	Rhizosphere_Vegetative	1.30105358948909e-23
-Bulksoil_Reproductive	Root_Vegetative	6.62389536951573e-16
-Bulksoil_before_sowing	Bulksoil_Vegetative	1.24318829668154e-27
-Bulksoil_before_sowing	Rhizosphere_Vegetative	8.3916487582167e-28
-Bulksoil_before_sowing	Root_Vegetative	7.8810588507345e-28
-Bulksoil_Vegetative	Rhizosphere_Vegetative	9.7744417133057e-18
-Bulksoil_Vegetative	Root_Vegetative	8.21790799728545e-28
-Rhizosphere_Vegetative	Root_Vegetative	1.37880163993635e-73
+Group1	Group2	Significance	Sig	FDR	Sig_FDR
+Rhizosphere_Reproductive	Root_Reproductive	6.96325694146333e-78	TRUE	4.87427985902433e-77	TRUE
+Rhizosphere_Reproductive	Bulksoil_Reproductive	8.85540403552697e-24	TRUE	1.09390285144745e-23	TRUE
+Rhizosphere_Reproductive	Bulksoil_before_sowing	7.8810588507345e-28	TRUE	1.17483082615034e-27	TRUE
+Rhizosphere_Reproductive	Bulksoil_Vegetative	7.8810588507345e-28	TRUE	1.17483082615034e-27	TRUE
+Rhizosphere_Reproductive	Rhizosphere_Vegetative	2.52979893826375e-78	TRUE	2.65628888517694e-77	TRUE
+Rhizosphere_Reproductive	Root_Vegetative	0.0039156204764268	TRUE	0.0039156204764268	TRUE
+Root_Reproductive	Bulksoil_Reproductive	7.8810588507345e-28	TRUE	1.17483082615034e-27	TRUE
+Root_Reproductive	Bulksoil_before_sowing	7.8810588507345e-28	TRUE	1.17483082615034e-27	TRUE
+Root_Reproductive	Bulksoil_Vegetative	7.8810588507345e-28	TRUE	1.17483082615034e-27	TRUE
+Root_Reproductive	Rhizosphere_Vegetative	4.12355143743358e-80	TRUE	8.65945801861052e-79	TRUE
+Root_Reproductive	Root_Vegetative	3.06022850460207e-67	TRUE	1.28529597193287e-66	TRUE
+Bulksoil_Reproductive	Bulksoil_before_sowing	3.10797074170385e-28	TRUE	9.32391222511155e-28	TRUE
+Bulksoil_Reproductive	Bulksoil_Vegetative	3.10797074170385e-28	TRUE	9.32391222511155e-28	TRUE
+Bulksoil_Reproductive	Rhizosphere_Vegetative	1.30105358948909e-23	TRUE	1.51789585440394e-23	TRUE
+Bulksoil_Reproductive	Root_Vegetative	6.62389536951573e-16	TRUE	6.95509013799152e-16	TRUE
+Bulksoil_before_sowing	Bulksoil_Vegetative	1.24318829668154e-27	TRUE	1.63168463939452e-27	TRUE
+Bulksoil_before_sowing	Rhizosphere_Vegetative	8.3916487582167e-28	TRUE	1.17483082615034e-27	TRUE
+Bulksoil_before_sowing	Root_Vegetative	7.8810588507345e-28	TRUE	1.17483082615034e-27	TRUE
+Bulksoil_Vegetative	Rhizosphere_Vegetative	9.7744417133057e-18	TRUE	1.08033303147063e-17	TRUE
+Bulksoil_Vegetative	Root_Vegetative	8.21790799728545e-28	TRUE	1.17483082615034e-27	TRUE
+Rhizosphere_Vegetative	Root_Vegetative	1.37880163993635e-73	TRUE	7.23870860966584e-73	TRUE

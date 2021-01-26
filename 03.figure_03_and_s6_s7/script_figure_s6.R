@@ -194,7 +194,8 @@ br <- brewer.pal(n = 11, name = "BrBG")
 ## reduce 2D to 1D by calculating Euclidean distance
 nr <- nrow(this_asv_filter)
 ASV <- c()
-## set sample 558H (Bulksoil_before_sowing sample) as control
+# set sample with smalles mean dissimilarity to Bulksoil_before_sowing sample
+# as control, Sample_ID is 544H
 min_x <- min(this_asv_filter[, 2])
 x0 <- min_x
 y0 <- this_asv_filter[this_asv_filter[, 2] == min_x, 3]
@@ -275,3 +276,52 @@ p_s6c <- grid.arrange(p_s6c_1, p_s6c_2,
 
 p <- grid.arrange(p_s6b, p_s6c, nrow = 1, ncol = 2)
 ggsave("Figure_S6bc.pdf", p, width = 10, height = 5)
+
+###############################################################################
+## Statistical test
+lst <- unique(ASV$Compartment_Stage)
+len <- length(lst)
+
+sig <- c()
+for (i in 1 : (len -1)) {
+    this_i <- ASV[ASV$Compartment_Stage == lst[i], ]
+    for (j in (i + 1) : len) {
+        this_j <- ASV[ASV$Compartment_Stage == lst[j], ]
+        p <- wilcox.test(as.numeric(as.character(this_i$Distance)),
+                         as.numeric(as.character(this_j$Distance)))
+        this_sig <- c(lst[i], lst[j], p$p.value)
+        sig <- rbind(sig, this_sig)
+    }
+}
+
+colnames(sig) <- c("Group1", "Group2", "Significance")
+sig <- as.data.frame(sig)
+sig$Significance <- as.numeric(as.character(sig$Significance))
+sig$Sig <- ifelse(sig$Significance < 0.05, TRUE, FALSE)
+sig$FDR <- p.adjust(sig$Significance, method = "fdr")
+sig$Sig_FDR <- ifelse(as.numeric(as.character(sig$FDR)) < 0.05,
+                        TRUE, FALSE)
+
+write.table(sig, "Figure_S6c_ASV_sig.txt", quote = F, sep = "\t", row.names = F)
+
+sig <- c()
+for (i in 1 : (len -1)) {
+    this_i <- TAX[TAX$Compartment_Stage == lst[i], ]
+    for (j in (i + 1) : len) {
+        this_j <- TAX[TAX$Compartment_Stage == lst[j], ]
+        p <- wilcox.test(as.numeric(as.character(this_i$Distance)),
+                         as.numeric(as.character(this_j$Distance)))
+        this_sig <- c(lst[i], lst[j], p$p.value)
+        sig <- rbind(sig, this_sig)
+    }
+}
+
+colnames(sig) <- c("Group1", "Group2", "Significance")
+sig <- as.data.frame(sig)
+sig$Significance <- as.numeric(as.character(sig$Significance))
+sig$Sig <- ifelse(sig$Significance < 0.05, TRUE, FALSE)
+sig$FDR <- p.adjust(sig$Significance, method = "fdr")
+sig$Sig_FDR <- ifelse(as.numeric(as.character(sig$FDR)) < 0.05,
+                        TRUE, FALSE)
+
+write.table(sig, "Figure_S6c_TAX_sig.txt", quote = F, sep = "\t", row.names = F)

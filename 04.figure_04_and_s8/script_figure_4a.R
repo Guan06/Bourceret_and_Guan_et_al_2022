@@ -34,8 +34,8 @@ get_sig <- function(x) {
     out <- c()
 
     for (n in nc0 : nc) {
-        this <- m[, c(1 : 5, n)]
-        this_name <- colnames(m)[n]
+        this <- m[, c(1:4, n)]
+        this_name <- colnames(this)[5]
 
         for (s in lst_Stage) {
             this_stage <- this[this$Stage == s, ]
@@ -80,7 +80,7 @@ lst_lipid <- unique(sig_lipid[, 5])
 ## and calculate the corresponding FC
 get_sub <- function(x, lst) {
     m <- merge(design, x)
-    sub <- cbind(m[, 1:5], m[, colnames(m) %in% lst])
+    sub <- cbind(m[, 1:4], m[, colnames(m) %in% lst])
     nc0 <- ncol(design) + 1
     nc <- ncol(sub)
     out <- c()
@@ -129,7 +129,15 @@ sub_lipid <- get_sub(lipid, lst_lipid)
 
 sub_all <- as.data.frame(rbind(sub_biomass, sub_sugar, sub_aa, sub_ionomic))
 sub_tab <- rbind(sub_all, sub_lipid)
-write.table(sub_tab, "Figure_4a.txt", quote = F, sep = "\t", row.names = F)
+
+sub_tab <- as.data.frame(sub_tab)
+sub_tab$p_value <- as.numeric(as.character(sub_tab$p_value))
+sub_tab$Sig <- ifelse(sub_tab$p_value < 0.05, TRUE, FALSE)
+sub_tab$FDR <- p.adjust(sub_tab$p_value, method = "fdr")
+sub_tab$Sig_FDR <- ifelse(as.numeric(as.character(sub_tab$FDR)) < 0.05,
+                        TRUE, FALSE)
+
+write.table(sub_tab, "Figure_4a_sig.txt", quote = F, sep = "\t", row.names = F)
 
 nk <- sub_all[sub_all$Management == "NK", ]
 npk <- sub_all[sub_all$Management == "NPK", ]
