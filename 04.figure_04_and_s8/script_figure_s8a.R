@@ -5,7 +5,7 @@ library(scales)
 library(vegan)
 source("../00.common_scripts/plot_settings.R")
 source("./figure_04_settings.R")
-source("./cpcoa_funtions.R")
+source("./cpcoa_functions.R")
 
 design_file <- "../00.data/design_48.txt"
 design <- read.table(design_file, header = T, sep = "\t")
