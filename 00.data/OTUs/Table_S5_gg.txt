@@ -1,0 +1,15 @@
+OTU_29	Bacteria Actinobacteria Actinobacteria Actinomycetales Actinosynnemataceae Lentzea	0.67	3
+OTU_100	Bacteria Proteobacteria Gammaproteobacteria Xanthomonadales Sinobacteraceae  	0.67	3
+OTU_140	Bacteria Proteobacteria Alphaproteobacteria Sphingomonadales Sphingomonadaceae Kaistobacter 	1.00	3
+OTU_7	Bacteria Proteobacteria Betaproteobacteria Burkholderiales Comamonadaceae  	0.67	3
+OTU_75	Bacteria Proteobacteria Betaproteobacteria Burkholderiales Oxalobacteraceae  	1.00	3
+OTU_53	Bacteria Proteobacteria Alphaproteobacteria Rhizobiales Phyllobacteriaceae	0.67	3
+OTU_32	Bacteria Proteobacteria Gammaproteobacteria Xanthomonadales Xanthomonadaceae Rhodanobacter 	0.67	3
+OTU_14	Bacteria Proteobacteria Gammaproteobacteria Pseudomonadales Pseudomonadaceae  	0.67	3
+OTU_16	Bacteria Proteobacteria Betaproteobacteria Burkholderiales Comamonadaceae  	0.67	3
+OTU_12	Bacteria Proteobacteria Betaproteobacteria Burkholderiales Comamonadaceae Methylibium 	0.67	3
+OTU_8	Bacteria Proteobacteria Betaproteobacteria Burkholderiales Oxalobacteraceae  	1.00	3
+OTU_3	Bacteria Proteobacteria Betaproteobacteria Burkholderiales Comamonadaceae Rubrivivax	0.67	3
+OTU_1	Bacteria Actinobacteria Actinobacteria Actinomycetales Streptomycetaceae Streptomyces mirabilis	0.67	3
+OTU_4	Bacteria Proteobacteria Alphaproteobacteria Rhizobiales Bradyrhizobiaceae	0.67	3
+OTU_88	Bacteria Actinobacteria Actinobacteria Actinomycetales Mycobacteriaceae Mycobacterium 	1.00	3

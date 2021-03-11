@@ -71,8 +71,8 @@ b <- box(m, "Management", "Stage", "Stage_Management_Genotype",
 ## combine
 library(gridExtra)
 
-s7 <- grid.arrange(a, b, nrow = 2, ncol = 1)
-ggsave("Figure_S7.pdf", s7)
+s8 <- grid.arrange(b, a, nrow = 2, ncol = 1)
+ggsave("Figure_S8.pdf", s8)
 
 lst_Stage <- as.character(unique(m$Stage))
 lst_Management <- as.character(unique(m$Management))
@@ -125,7 +125,7 @@ sig_a$FDR <- p.adjust(sig_a$Significance, method = "fdr")
 sig_a$Sig_FDR <- ifelse(as.numeric(as.character(sig_a$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig_a, "Figure_S7a.txt", quote = F, sep = "\t", row.names = F)
+write.table(sig_a, "Figure_S8b.txt", quote = F, sep = "\t", row.names = F)
 
 ## Test for b ################################################################
 sig0 <- box_sig(m, "Genotype", "myc_colonization_degree")
@@ -175,4 +175,4 @@ sig_b$Sig <- ifelse(sig_b$Significance < 0.05, TRUE, FALSE)
 sig_b$FDR <- p.adjust(sig_b$Significance, method = "fdr")
 sig_b$Sig_FDR <- ifelse(as.numeric(as.character(sig_b$FDR)) < 0.05,
                         TRUE, FALSE)
-write.table(sig_b,"Figure_S7b.txt", quote = F, sep = "\t", row.names = F)
+write.table(sig_b,"Figure_S8a.txt", quote = F, sep = "\t", row.names = F)

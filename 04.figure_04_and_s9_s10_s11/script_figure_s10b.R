@@ -2,7 +2,7 @@
 
 library(parallelDist)
 source("../00.common_scripts/plot_settings.R")
-source("./figure_04_settings.R")
+source("./figure_s10_settings.R")
 
 design_file <- "../00.data/design_48.txt"
 design <- read.table(design_file, header = T, sep = "\t")
@@ -13,7 +13,7 @@ design$Man_Sta <- paste0(design$Management, "_", design$Stage)
 ## Constrained Bacteria and Fungi PCoA plots
 library(scales)
 library(vegan)
-source("./cpcoa_funtions.R")
+source("./cpcoa_functions.R")
 
 ###############################################################################
 ## for Bacteria
@@ -132,4 +132,4 @@ if (ncol(capscale.gen$CCA$wa) >= 2) {
 ## put together
 library(gridExtra)
 all <- grid.arrange(p1, p2, nrow = 1, ncol = 2)
-ggsave("Figure_4c.pdf", all, width = 7, height = 3)
+ggsave("Figure_S10b.pdf", all, width = 7, height = 3)

@@ -87,7 +87,7 @@ p <- ggplot(data = asv_tax_sum,
                                      size = 4, hjust = 1)) +
     labs(x = "", y = "")
 
-ggsave("Figure_S6a.pdf", p, width = 16, height = 10)
+ggsave("Figure_S7a.pdf", p, width = 16, height = 10)
 
 ###############################################################################
 ## for B and C, phylum based PCoA and density plot
@@ -115,7 +115,7 @@ bc_mat <- as.matrix(bc)
 dmr <- cmdscale(bc_mat, k = 4, eig = T)
 
 design <- design[match(rownames(bc_mat), design$Sample_ID), ]
-p_s6b <- pcoa(dmr, design, 12, "Compartment", "Stage", 1.2, kingdom) +
+p_s7b <- pcoa(dmr, design, 12, "Compartment", "Stage", 1.2, kingdom) +
     theme(legend.position = "none")
 
 ## for density plot
@@ -224,7 +224,7 @@ write.table(df_mean, "Figure_S6c_ASV_mean.txt",
 lines_mean <- as.numeric(as.character(df_mean$Mean))
 colors <- c(br[c(1, 2, 4)], oranges[c(6, 3)], greens[c(6, 3)])
 
-p_s6c_1 <- ggplot(ASV, aes(Distance, fill = Compartment_Stage)) +
+p_s7c_1 <- ggplot(ASV, aes(Distance, fill = Compartment_Stage)) +
         geom_density(alpha = 0.7, size = 0.2, color = "wheat4") +
         scale_fill_manual(values = colors) +
         main_theme +
@@ -256,11 +256,11 @@ TAX$Compartment_Stage <- as.character(TAX$Compartment_Stage)
 
 df_mean <- TAX %>% group_by(Compartment_Stage) %>%
     summarise(Mean = mean(Distance))
-write.table(df_mean, "Figure_S6c_TAX_mean.txt",
+write.table(df_mean, "Figure_S7c_TAX_mean.txt",
             quote = F, sep = "\t", row.names = F)
 lines_mean <- as.numeric(as.character(df_mean$Mean))
 
-p_s6c_2 <- ggplot(TAX, aes(Distance, fill = Compartment_Stage)) +
+p_s7c_2 <- ggplot(TAX, aes(Distance, fill = Compartment_Stage)) +
         geom_density(alpha = 0.7, size = 0.2, color = "wheat4") +
         scale_fill_manual(values = colors) +
         main_theme +
@@ -269,13 +269,13 @@ p_s6c_2 <- ggplot(TAX, aes(Distance, fill = Compartment_Stage)) +
                    linetype = "longdash")
 
 ## put together
-p_s6c <- grid.arrange(p_s6c_1, p_s6c_2,
-                       p_s6c_1, p_s6c_2,
-                       p_s6c_1, p_s6c_2,
+p_s7c <- grid.arrange(p_s7c_1, p_s7c_2,
+                       p_s7c_1, p_s7c_2,
+                       p_s7c_1, p_s7c_2,
                        nrow = 6, ncol = 1)
 
-p <- grid.arrange(p_s6b, p_s6c, nrow = 1, ncol = 2)
-ggsave("Figure_S6bc.pdf", p, width = 10, height = 5)
+p <- grid.arrange(p_s7b, p_s7c, nrow = 1, ncol = 2)
+ggsave("Figure_S7bc.pdf", p, width = 10, height = 5)
 
 ###############################################################################
 ## Statistical test
@@ -302,7 +302,7 @@ sig$FDR <- p.adjust(sig$Significance, method = "fdr")
 sig$Sig_FDR <- ifelse(as.numeric(as.character(sig$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig, "Figure_S6c_ASV_sig.txt", quote = F, sep = "\t", row.names = F)
+write.table(sig, "Figure_S7c_ASV_sig.txt", quote = F, sep = "\t", row.names = F)
 
 sig <- c()
 for (i in 1 : (len -1)) {
@@ -324,4 +324,4 @@ sig$FDR <- p.adjust(sig$Significance, method = "fdr")
 sig$Sig_FDR <- ifelse(as.numeric(as.character(sig$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig, "Figure_S6c_TAX_sig.txt", quote = F, sep = "\t", row.names = F)
+write.table(sig, "Figure_S7c_TAX_sig.txt", quote = F, sep = "\t", row.names = F)

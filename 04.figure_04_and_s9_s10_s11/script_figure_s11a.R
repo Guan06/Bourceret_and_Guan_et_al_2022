@@ -4,7 +4,7 @@ library(parallelDist)
 library(scales)
 library(vegan)
 source("../00.common_scripts/plot_settings.R")
-source("./figure_04_settings.R")
+source("./figure_s10_settings.R")
 source("./cpcoa_functions.R")
 
 design_file <- "../00.data/design_48.txt"
@@ -72,4 +72,4 @@ biomass2 <- biomass[, colnames(biomass) %in% c("Sample_ID",
                                                "stem.length",
                                                "total.leaf.number")]
 p1 <- meta_plot(biomass2, design)
-ggsave("Figure_S8a.pdf", p1, width = 3.5, height = 3)
+ggsave("Figure_S11a.pdf", p1, width = 3.5, height = 3)

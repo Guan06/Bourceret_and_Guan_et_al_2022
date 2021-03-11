@@ -5,8 +5,8 @@ library(scales)
 library(vegan)
 library(ggplot2)
 source("../00.common_scripts/plot_settings.R")
-source("./cpcoa_funtions.R")
-source("./figure_04_settings.R")
+source("./cpcoa_functions.R")
+source("./figure_s10_settings.R")
 
 design_file <- "../00.data/design_48.txt"
 design <- read.table(design_file, header = T, sep = "\t")
@@ -65,7 +65,7 @@ meta_plot <- function(x, design) {
     return(p)
 }
 
-lipid_file <- "../00.data/meta_data/metabolites_lipid.txt"
+lipid_file <- "../00.data/meta_data/lipid_NK_NPK.txt"
 lipid <- read.table(lipid_file, header = T, sep = "\t")
 p2 <- meta_plot(lipid, design)
-ggsave("Figure_4b.pdf", p2, width = 3.5, height = 3)
+ggsave("Figure_S10a.pdf", p2, width = 3.5, height = 3)

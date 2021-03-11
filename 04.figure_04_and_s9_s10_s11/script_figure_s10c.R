@@ -4,7 +4,7 @@ library(ggpubr)
 library(gridExtra)
 library(agricolae)
 source("../00.common_scripts/plot_settings.R")
-source("./figure_04_settings.R")
+source("./figure_s10_settings.R")
 ## for diversity
 div_bac <- read.table("../00.data/alpha_diversity/alpha_Bacteria.txt",
                       header = T, sep = "\t")
@@ -43,7 +43,7 @@ p2 <- box_div(div_fun, design, "Fungi")
 p3 <- box_div(div_oom, design, "Oomycetes")
 
 all <- grid.arrange(p1, p2, p3, nrow = 1, ncol = 3)
-ggsave("Figure_4d.pdf", all, width = 10, height = 3)
+ggsave("Figure_S10c.pdf", all, width = 10, height = 3)
 
 shannon_sig <- function(x , design) {
     m <- merge(design, x)
@@ -74,4 +74,4 @@ sig_tab$FDR <- p.adjust(sig_tab$Significance, method = "fdr")
 sig_tab$Sig_FDR <- ifelse(as.numeric(as.character(sig_tab$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig_tab, "Figure_4d.txt", row.names = F, sep = "\t", quote = F)
+write.table(sig_tab, "Figure_S10c.txt", row.names = F, sep = "\t", quote = F)
