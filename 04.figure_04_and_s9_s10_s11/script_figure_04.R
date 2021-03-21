@@ -56,7 +56,7 @@ plot_g <- function(g) {
                 scale_colour_manual(values = c(c_green, c_red, c_grey, c_black)) +
                 scale_shape_manual(values = c(16, 1)) +
                 main_theme +
-                coord_fixed(ratio = 1) +
+#                coord_fixed(ratio = 1) +
                 labs(x = paste0("CPCo 1 (", format(eig1, digits = 4), "%)"),
                      y = paste0("CPCo 2 (", format(eig2, digits = 4), "%)")) +
                 ggtitle(paste0(format(variance, digits = 3),
