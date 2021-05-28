@@ -5,6 +5,7 @@ library(ggpubr)
 
 source("../00.common_scripts/plot_settings.R")
 source("../00.common_scripts/box_plotting.R")
+source("../00.common_scripts/violin_plotting.R")
 
 ###############################################################################
 ###############################################################################
@@ -27,8 +28,12 @@ all$Compartment_Stage <- factor(all$Compartment_Stage,
                                 levels = Compartment_Stage_levels,
                                 ordered = TRUE)
 
-p1 <- box(all, "Compartment", "Stage", "Compartment_Stage", "Shannon")
-p1 <- p1 + ggtitle(kingdom) + theme(legend.position = "none")
+p_c1 <- violin(all, "Compartment", "Stage", "Compartment_Stage", "Shannon",
+            size = 2)
+p_c1 <- p_c1 + theme(legend.position = "none",
+                     axis.text.x = element_blank(),
+                     axis.text.y = element_text(size = 18),
+                     axis.title.y = element_text(size = 18))
 
 sig1 <- box_sig(all, "Compartment", "Shannon")
 Com_lst <- as.character(unique(all$Compartment))
@@ -47,7 +52,8 @@ sig12$FDR <- p.adjust(sig12$Significance, method = "fdr")
 sig12$Sig_FDR <- ifelse(as.numeric(as.character(sig12$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig12, "sig_Bacteria.txt", quote = F, sep = "\t", row.names = F)
+write.table(sig12, "Figure_1c_sig_Bacteria.txt",
+            quote = F, sep = "\t", row.names = F)
 
 ###############################################################################
 ###############################################################################
@@ -68,8 +74,12 @@ all <- m[, colnames(m) %in% c("Sample_ID", "Shannon", "Compartment",
 all$Compartment_Stage <- factor(all$Compartment_Stage,
                                 levels = Compartment_Stage_levels,
                                 ordered = TRUE)
-fp1 <- box(all, "Compartment", "Stage", "Compartment_Stage", "Shannon")
-fp1 <- fp1 + ggtitle(kingdom) + theme(legend.position = "none")
+p_c2 <- violin(all, "Compartment", "Stage", "Compartment_Stage", "Shannon",
+            size = 2)
+p_c2<- p_c2 + theme(legend.position = "none",
+                    axis.text.x = element_blank(),
+                    axis.text.y = element_text(size = 18),
+                    axis.title.y = element_text(size = 18))
 
 sig1 <- box_sig(all, "Compartment", "Shannon")
 Com_lst <- as.character(unique(all$Compartment))
@@ -88,7 +98,7 @@ sig12$FDR <- p.adjust(sig12$Significance, method = "fdr")
 sig12$Sig_FDR <- ifelse(as.numeric(as.character(sig12$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig12, "sig_Fungi.txt", quote = F, sep = "\t", row.names = F)
+write.table(sig12, "Figure_1c_sig_Fungi.txt", quote = F, sep = "\t", row.names = F)
 
 ###############################################################################
 ###############################################################################
@@ -110,8 +120,12 @@ all$Compartment_Stage <- factor(all$Compartment_Stage,
                                 levels = Compartment_Stage_levels,
                                 ordered = TRUE)
 
-op1 <- box(all, "Compartment", "Stage", "Compartment_Stage", "Shannon")
-op1 <- op1 + ggtitle(kingdom) + theme(legend.position = "none")
+p_c3 <- violin(all, "Compartment", "Stage", "Compartment_Stage", "Shannon",
+            size = 2)
+p_c3 <- p_c3 + theme(legend.position = "none",
+                     axis.text.x = element_blank(),
+                     axis.text.y = element_text(size = 18),
+                     axis.title.y = element_text(size = 18))
 
 sig1 <- box_sig(all, "Compartment", "Shannon")
 Com_lst <- as.character(unique(all$Compartment))
@@ -130,12 +144,5 @@ sig12$FDR <- p.adjust(sig12$Significance, method = "fdr")
 sig12$Sig_FDR <- ifelse(as.numeric(as.character(sig12$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig12, "sig_Oomycetes.txt", quote = F, sep = "\t", row.names = F)
+write.table(sig12, "Figure_1c_sig_Oomycetes.txt", quote = F, sep = "\t", row.names = F)
 
-###############################################################################
-###############################################################################
-## Output
-library(gridExtra)
-
-all_p1 <- grid.arrange(p1, fp1, op1, nrow = 1, ncol = 3)
-ggsave("Figure_2c.pdf", all_p1, width = 10, height = 5)

@@ -36,49 +36,60 @@ set1 <- brewer.pal(n = 11, name = "RdYlGn")
 set2 <- brewer.pal(n = 9, name = "Blues")
 set3 <- brewer.pal(n = 9, name = "YlOrRd")
 
+## sanzo c312
+c_yellow_orange <- "#ff8c00"
+c_burnt_sienna <- "#a93400"
+
+## sanzo c249 https://sanzo-wada.dmbk.io/combination/249
+c_NK <- c_ecru <- "#c0b490"
+c_NPK <- c_hays_russet <- "#681916"
+c_CONMIN <- c_olive_ocher <- "#d1bd19"
+c_BIODYN <- c_dark_medici_blue <- "#417777"
+
 ## set up colors and shapes for different grouping
-c_Com <- data.frame(group = c("Rhizosphere", "Root", "Bulksoil"),
-                    color = c(c_dark_red, c_very_dark_green, c_dark_brown))
+c_Com <- c("Rhizosphere" = c_dark_red, "Root" = c_very_dark_green,
+           "Bulksoil" = c_dark_brown)
 
-c_Man <- data.frame(group = c("NK", "NPK", "CONMIN", "BIODYN"),
-                    color = c(c_grey, c_black, c_red, c_green))
+c_Man <- c("NK" = c_NK, "NPK" = c_NPK, "CONMIN" = c_CONMIN, "BIODYN" = c_BIODYN)
 
-c_Gen <- data.frame(group = c("1_B73", "2_DK105", "3_PH207", "4_F2",
-                            "5_pht1;6", "Soil"),
-                    color = c(set2[3], set3[3], set2[5], set3[4], set2[8],
-                              c_dark_brown))
+c_Gen <- c("1_B73" = set2[3], "2_DK105" = set3[3], "3_PH207" = set2[5],
+           "4_F2" = set3[4], "5_pht1;6" = set2[8], "Soil" = c_dark_brown)
 
-c_Pool <- data.frame(group = c("Dent", "Flint"),
-                     color = c(c_blue, c_yellow))
+c_Pool <- c("Dent" = c_blue, "Flint" = c_yellow)
 
-c_Plo <- data.frame(group = c("19", "23", "6", "56", "96", "12", "50", "90"),
-                    color = c(c_grey, c_black, set1[3], set1[2], set1[1],
-                              set1[8], set1[9], set1[11]))
+# tints and shades generated from c_CONMIN and c_BIODYN
+# https://maketintsandshades.com/#d1bd19,417777
+c_Plo <- c("19" = c_NK, "23" = c_NPK,
+           "6" = "#e8de8c", "56" = "#d6c430", "96" = "#bcaa17",
+           "12" = "#a0bbbb", "50" = "#548585", "90" = "#2e5353")
 
-s_Sta <- data.frame(group = c("before_sowing", "Vegetative", "Reproductive"),
-                    shape = c(2, 1, 16))
+s_Sta <- c("before_sowing" = 17, "Vegetative" = 1, "Reproductive" = 16)
 
-s_Gen <- data.frame(group = c("1_B73", "2_DK105", "3_PH207", "4_F2",
-                            "5_pht1;6", "Soil"),
-                    shape = c(15, 16, 0, 1, 2, 4))
+s_Gen <- c("1_B73" = 15, "2_DK105" = 16, "3_PH207" = 0, "4_F2" = 1,
+            "5_pht1;6" = 2, "Soil" = 4)
 
-s_Loc <- data.frame(group = c("A1", "A2", "B1", "B2","B4"),
-                    shape = c(1, 2, 17, 16, 15))
+s_Pool <-c("Dent" = 16, "Flint" = 17)
 
-s_Plo <- data.frame(group = c("19", "23", "6", "56", "96", "12", "50", "90"),
-                    shape = c(2, 1, 15, 16, 17, 15, 16, 17))
+s_Fie <- c("DEMO" = 17, "DOK" = 2)
 
-s_Pos <- data.frame(group = c("1", "2", "3", "4", "5", "6"),
-                    shape = c(0, 1, 2, 15, 16, 17))
+get_color_df <- function(x) {
+    if (x == "Compartment") return (c_Com)
+    if (x == "Management") return (c_Man)
+    if (x == "Genotype") return (c_Gen)
+    if (x == "Pool") return (c_Pool)
+    if (x == "Plot") return (c_Plo)
+}
 
-s_Man <- data.frame(group = c("NK", "NPK", "CONMIN", "BIODYN"),
-                    shape = c(0, 1, 16, 17))
-
-s_Pool <- data.frame(group = c("Dent", "Flint"),
-                     shape = c(16, 17))
-
-s_Fie <- data.frame(group = c("DEMO", "DOK"),
-                    shape = c(17, 2))
+get_shape_df <- function(x) {
+    if (x == "Stage") return (s_Sta)
+    if (x == "Genotype") return (s_Gen)
+    if (x == "Location") return (s_Loc)
+    if (x == "Plot") return (s_Plo)
+    if (x == "Position") return (s_Pos)
+    if (x == "Management") return (s_Man)
+    if (x == "Pool") return (s_Pool)
+    if (x == "Field") return(s_Fie)
+}
 
 ## theme for the plots
 main_theme <- theme(panel.background = element_blank(),
@@ -94,6 +105,7 @@ main_theme <- theme(panel.background = element_blank(),
                     legend.background = element_blank(),
                     legend.key = element_blank(),
                     text = element_text(family="sans"))
+
 Management_Stage_levels <- c("NK_before_sowing",
                              "NK_Vegetative",
                              "NK_Reproductive",
@@ -132,6 +144,14 @@ Plot_Stage_levels <- c("19_before_sowing",
                         "90_Vegetative",
                         "90_Reproductive"
                     )
+Plot_Stage_labels <- c("NK_Un", "NK_V", "NK_R",
+                       "NPK_Un", "NPK_V", "NPK_R",
+                       "CO-1_Un", "CO-1_V", "CO-1_R",
+                       "CO-2_Un", "CO-2_V", "CO-2_R",
+                       "CO-3_Un", "CO-3_V", "CO-3_R",
+                       "BI-1_Un", "BI-1_V", "BI-1_R",
+                       "BI-2_Un", "BI-2_V", "BI-2_R",
+                       "BI-3_Un", "BI-3_V", "BI-3_R")
 
 Compartment_Stage_levels <- c("Bulksoil_before_sowing",
                               "Bulksoil_Vegetative",
@@ -140,3 +160,15 @@ Compartment_Stage_levels <- c("Bulksoil_before_sowing",
                               "Rhizosphere_Reproductive",
                               "Root_Vegetative",
                               "Root_Reproductive")
+
+greens <- brewer.pal(n = 9, name = "Greens")
+oranges <- brewer.pal(n = 9, name = "Oranges")
+br <- brewer.pal(n = 11, name = "BrBG")
+
+c_Com_Sta <- c("Bulksoil_before_sowing" = br[4],
+            "Bulksoil_Vegetative" = br[2],
+            "Bulksoil_Reproductive" = br[1],
+            "Rhizosphere_Vegetative" = oranges[3],
+            "Rhizosphere_Reproductive" = oranges[6],
+            "Root_Vegetative" = greens[3],
+            "Root_Reproductive" = greens[6])

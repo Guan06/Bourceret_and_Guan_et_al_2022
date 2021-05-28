@@ -50,16 +50,17 @@ plot_g <- function(g){
 
     p <- ggplot(points, aes(x, y, shape = Stage, color = Management)) +
                 geom_point(size = 3, alpha = 0.8) +
-                scale_colour_manual(values = c(c_grey, c_black)) +
-                scale_shape_manual(values = c(1, 16)) +
+                scale_colour_manual(values = c_Man) +
+                scale_shape_manual(values = s_Sta) +
                 main_theme +
-                coord_fixed(ratio = 1) +
+#                coord_fixed(ratio = 1) +
                 labs(x = paste0("CPCo 1 (", format(eig1, digits = 4), "%)"),
                      y = paste0("CPCo 2 (", format(eig2, digits = 4), "%)")) +
-                ggtitle(paste0(format(variance, digits = 3),
-                               " % of variance; p = ",
+                ggtitle(paste0(format(variance, digits = 4),
+                               " %; p = ",
                                format(p.val, digits = 2))) +
-                theme(legend.position = "none")
+                theme(legend.position = "none",
+                      plot.title = element_text(size = 14))
 }
 
 g1 <- plot_g("1_B73")
@@ -68,4 +69,4 @@ g3 <- plot_g("2_DK105")
 g4 <- plot_g("4_F2")
 
 all <- grid.arrange(g1, g2, g3, g4, nrow = 1, ncol = 4)
-ggsave("Figure_S9.pdf", all, width = 12, height = 5)
+ggsave("Figure_S9.pdf", all, width = 12, height = 3)

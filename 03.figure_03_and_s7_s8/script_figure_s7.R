@@ -18,63 +18,7 @@ kingdom <- "Fungi"
 
 ###############################################################################
 ## For relative abundance histogram
-asv <- readRDS(asv_file)
-design <- read.table(design_file, header = T, sep = "\t")
-tax <- read.table(tax_file, header = T, sep = "\t")
-
-# Get the intersection of asv and design file
-inter <- intersect(as.character(colnames(asv)), as.character(design$Sample_ID))
-asv <- asv[, colnames(asv) %in% inter]
-design <- design[design$Sample_ID %in% inter, ]
-
-asv <- asv[, match(design$Sample_ID, colnames(asv))]
-
-# normalize by colSums
-asv <- apply(asv, 2, function(x) x / sum(x))
-
-asv_tab <- as.table(as.matrix(asv))
-asv_tab <- prop.table(asv_tab, 2)
-
-asv_tab <- asv_tab * 1000 / 6
-asv_tab <- as.data.frame(asv_tab)
-colnames(asv_tab) <- c("ASV_ID", "Sample_ID", "Freq")
-
-tax$ASV_ID <- rownames(tax)
-
-asv_tax <- join(asv_tab, tax)
-# dim = 10907520 * 10
-
-asv_tax$Phylum <- as.character(asv_tax$Phylum)
-
-## Use Unassigned for unassigned ASVs
-idx3 <- is.na(asv_tax$Phylum)
-asv_tax$Phylum[idx3] <- "Unassigned"
-
-## Use others for phyla not included
-idx4 <- !(asv_tax$Phylum %in% Fun_phyla)
-asv_tax$Phylum[idx4] <- "Others"
-
-asv_tax <- asv_tax[, c(1 : 3, 5)]
-asv_tax <- asv_tax[asv_tax$Phylum %in% Fun_phyla_2, ]
-# dim = 10907520 * 4
-
-asv_tax_sum <- aggregate(asv_tax$Freq,
-                         by = list(Phylum = asv_tax$Phylum,
-                                   Sample_ID = asv_tax$Sample_ID),
-                         FUN = sum)
-
-## join with design file
-col2 <- which(colnames(design) == "Compartment_Stage_Management_Plot_Genotype")
-design <- design[, c(1, col2)]
-colnames(design)[2] <- "Group2"
-
-asv_tax_sum <- join(asv_tax_sum, design)
-
-asv_tax_sum$Group2 <- factor(asv_tax_sum$Group2,
-                             levels = order_new,
-                             ordered = TRUE)
-
-### Merge duplicates together
+source("./script_figure_s7_pre.R")
 
 p <- ggplot(data = asv_tax_sum,
              aes(x = Group2, y = x,
@@ -115,7 +59,7 @@ bc_mat <- as.matrix(bc)
 dmr <- cmdscale(bc_mat, k = 4, eig = T)
 
 design <- design[match(rownames(bc_mat), design$Sample_ID), ]
-p_s7b <- pcoa(dmr, design, 12, "Compartment", "Stage", 1.2, kingdom) +
+p_s7b <- pcoa(dmr, design, 12, "Compartment", "Stage", 2.4, kingdom) +
     theme(legend.position = "none")
 
 ## for density plot
@@ -152,11 +96,6 @@ this_asv_filter <- asv_dis[asv_dis$Compare_Group == "Bulksoil_before_sowing" |
 
 this_asv_filter <- this_asv_filter %>% spread(Compare_Group, Dis_Mean)
 this_asv_filter <- merge(this_asv_filter, design)
-this_asv_filter$Compartment <- factor(this_asv_filter$Compartment,
-                                      levels = c_Com$group)
-this_asv_filter$Stage <- factor(this_asv_filter$Stage,
-                                levels = s_Sta$group)
-this_asv_filter$Compartment_Stage <- factor(this_asv_filter$Compartment_Stage)
 
 ############################################  at the Phylum level
 tax_dis <- c()
@@ -179,16 +118,8 @@ this_tax_filter <- tax_dis[tax_dis$Compare_Group == "Bulksoil_before_sowing" |
                            tax_dis$Compare_Group == "Root_Reproductive", ]
 this_tax_filter <- this_tax_filter %>% spread(Compare_Group, Dis_Mean)
 this_tax_filter <- merge(this_tax_filter, design)
-this_tax_filter$Compartment <- factor(this_tax_filter$Compartment,
-                                      levels = c_Com$group)
-this_tax_filter$Stage <- factor(this_tax_filter$Stage,
-                                levels = s_Sta$group)
-this_tax_filter$Compartment_Stage <- factor(this_tax_filter$Compartment_Stage)
 
 ##########################################  density plot
-greens <- brewer.pal(n = 9, name = "Greens")
-oranges <- brewer.pal(n = 9, name = "Oranges")
-br <- brewer.pal(n = 11, name = "BrBG")
 
 ############## at the ASV level
 ## reduce 2D to 1D by calculating Euclidean distance
@@ -218,7 +149,7 @@ ASV$Compartment_Stage <- as.character(ASV$Compartment_Stage)
 
 df_mean <- ASV %>% group_by(Compartment_Stage) %>%
     summarise(Mean = mean(Distance))
-write.table(df_mean, "Figure_S6c_ASV_mean.txt",
+write.table(df_mean, "Figure_S7c_ASV_mean.txt",
             quote = F, sep = "\t", row.names = F)
 
 lines_mean <- as.numeric(as.character(df_mean$Mean))
@@ -226,7 +157,7 @@ colors <- c(br[c(1, 2, 4)], oranges[c(6, 3)], greens[c(6, 3)])
 
 p_s7c_1 <- ggplot(ASV, aes(Distance, fill = Compartment_Stage)) +
         geom_density(alpha = 0.7, size = 0.2, color = "wheat4") +
-        scale_fill_manual(values = colors) +
+        scale_fill_manual(values = c_Com_Sta) +
         main_theme +
         theme(legend.position = "none", axis.title = element_blank()) +
         geom_vline(xintercept = lines_mean, color = colors,
@@ -262,19 +193,21 @@ lines_mean <- as.numeric(as.character(df_mean$Mean))
 
 p_s7c_2 <- ggplot(TAX, aes(Distance, fill = Compartment_Stage)) +
         geom_density(alpha = 0.7, size = 0.2, color = "wheat4") +
-        scale_fill_manual(values = colors) +
+        scale_fill_manual(values = c_Com_Sta) +
         main_theme +
         theme(legend.position = "none", axis.title = element_blank()) +
         geom_vline(xintercept = lines_mean, color = colors,
                    linetype = "longdash")
 
 ## put together
-p_s7c <- grid.arrange(p_s7c_1, p_s7c_2,
+library(cowplot)
+p_s7c <- plot_grid(p_s7c_1, p_s7c_2,
                        p_s7c_1, p_s7c_2,
                        p_s7c_1, p_s7c_2,
-                       nrow = 6, ncol = 1)
+                       nrow = 6, ncol = 1,
+                       align = "v", axis = "l")
 
-p <- grid.arrange(p_s7b, p_s7c, nrow = 1, ncol = 2)
+p <- plot_grid(p_s7b, p_s7c, nrow = 1, ncol = 2)
 ggsave("Figure_S7bc.pdf", p, width = 10, height = 5)
 
 ###############################################################################

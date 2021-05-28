@@ -1,15 +1,11 @@
 #!/biodata/dep_psl/grp_rgo/tools/bin/Rscript
 
 library(ggplot2)
-library(parallelDist)
+library(cowplot)
 source("../00.common_scripts/plot_settings.R")
-source("../00.common_scripts/pcoa_plotting.R")
 source("../00.common_scripts/box_plotting.R")
 
 ###############################################################################
-###############################################################################
-## For Bacteria
-
 asv_file <- "../00.data/final_ASV/Bacteria/ASV_raref.rds"
 alpha_file <- "../00.data/alpha_diversity/alpha_Bacteria.txt"
 design_file <- "../00.data/design.txt"
@@ -18,6 +14,7 @@ kingdom <- "Bacteria"
 asv <- readRDS(asv_file)
 design <- read.table(design_file, header = T, sep = "\t")
 design <- design[design$Compartment == "Bulksoil", ]
+design$Plot <- as.character(design$Plot)
 
 alpha <- read.table(alpha_file, header = T, sep = "\t")
 alpha_soil <- merge(alpha, design)
@@ -36,11 +33,14 @@ alpha_soil$Management_Stage <- factor(alpha_soil$Management_Stage,
 alpha_soil$Plot_Stage <- paste0(alpha_soil$Plot, "_", alpha_soil$Stage)
 alpha_soil$Plot_Stage <- factor(alpha_soil$Plot_Stage,
                                 levels = Plot_Stage_levels,
+                                labels = Plot_Stage_labels,
                                 ordered = TRUE)
 
-p0 <- box(alpha_soil, "Plot", "Stage", "Plot_Stage", "Shannon") +
+p0 <- box(alpha_soil, "Plot", "Stage", "Plot_Stage", "Shannon", size = 1.8) +
     theme(legend.position = "none",
-          axis.text = element_text(size = 18))
+          axis.text.x = element_text(size = 12),
+          axis.text.y = element_text(size = 18)) +
+    labs(y = '')
 
 # calculate the significance of alpha diversity
 sig0 <- box_sig(alpha_soil, "Field", "Shannon")
@@ -60,28 +60,8 @@ sig12$Sig <- ifelse(sig12$Significance < 0.05, TRUE, FALSE)
 sig12$FDR <- p.adjust(sig12$Significance, method = "fdr")
 sig12$Sig_FDR <- ifelse(as.numeric(as.character(sig12$FDR)) < 0.05,
                         TRUE, FALSE)
-write.table(sig12, "sig_Bacteria.txt", quote = F, sep = "\t", row.names = F)
+write.table(sig12, "Figure_s3_sig_Bacteria.txt", quote = F, sep = "\t", row.names = F)
 
-# Get the intersection of asv and design file
-inter <- intersect(as.character(colnames(asv)), as.character(design$Sample_ID))
-asv <- asv[, colnames(asv) %in% inter]
-design <- design[design$Sample_ID %in% inter, ]
-
-# Bray-Curtis distance
-bc <- as.matrix(parDist(t(asv), method = "bray"))
-des <- design
-dis <- bc
-dmr <- cmdscale(dis, k = 4, eig = T)
-n <- nrow(dis)
-print(n)
-
-## Management + Stage
-p1 <- pcoa(dmr, des, 12, "Plot", "Stage", 2.4, kingdom) +
-    theme(legend.position = "none",
-          axis.text = element_text(size = 18),
-          axis.text.x = element_text(size = 18))
-
-##############################################################################
 ###############################################################################
 ## For Fungi
 
@@ -91,6 +71,7 @@ kingdom <- "Fungi"
 
 asv <- readRDS(asv_file)
 design <- read.table(design_file, header = T, sep = "\t")
+design$Plot <- as.character(design$Plot)
 design <- design[design$Compartment == "Bulksoil", ]
 
 alpha <- read.table(alpha_file, header = T, sep = "\t")
@@ -109,12 +90,14 @@ alpha_soil$Management_Stage <- factor(alpha_soil$Management_Stage,
 alpha_soil$Plot_Stage <- paste0(alpha_soil$Plot, "_", alpha_soil$Stage)
 alpha_soil$Plot_Stage <- factor(alpha_soil$Plot_Stage,
                                 levels = Plot_Stage_levels,
+                                labels = Plot_Stage_labels,
                                 ordered = TRUE)
 
-fp0 <- box(alpha_soil, "Plot", "Stage", "Plot_Stage", "Shannon") +
+fp0 <- box(alpha_soil, "Plot", "Stage", "Plot_Stage", "Shannon", size = 1.8) +
     theme(legend.position = "none",
-          axis.text = element_text(size = 18),
-          axis.text.x = element_text(size = 18))
+          axis.text.x = element_text(size = 12),
+          axis.text.y = element_text(size = 18)) +
+    labs(y = '')
 
 # calculate the significance of alpha diversity
 sig0 <- box_sig(alpha_soil, "Field", "Shannon")
@@ -135,29 +118,8 @@ sig12$FDR <- p.adjust(sig12$Significance, method = "fdr")
 sig12$Sig_FDR <- ifelse(as.numeric(as.character(sig12$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig12, "sig_Fungi.txt", quote = F, sep = "\t", row.names = F)
+write.table(sig12, "Figure_s3_sig_Fungi.txt", quote = F, sep = "\t", row.names = F)
 
-# Get the intersection of asv and design file
-inter <- intersect(as.character(colnames(asv)), as.character(design$Sample_ID))
-asv <- asv[, colnames(asv) %in% inter]
-design <- design[design$Sample_ID %in% inter, ]
-
-# Bray-Curtis distance
-bc <- as.matrix(parDist(t(asv), method = "bray"))
-des <- design
-dis <- bc
-dmr <- cmdscale(dis, k = 4, eig = T)
-n <- nrow(dis)
-print(n)
-
-## Management + Stage
-## Management + Stage
-fp1 <- pcoa(dmr, des, 12, "Plot", "Stage", 2.4, kingdom) +
-    theme(legend.position = "none",
-          axis.text = element_text(size = 18),
-          axis.text.x = element_text(size = 18))
-
-###############################################################################
 ###############################################################################
 ## For Oomycetes
 
@@ -167,6 +129,7 @@ kingdom <- "Oomycetes"
 
 asv <- readRDS(asv_file)
 design <- read.table(design_file, header = T, sep = "\t")
+design$Plot <- as.character(design$Plot)
 design <- design[design$Compartment == "Bulksoil", ]
 
 alpha <- read.table(alpha_file, header = T, sep = "\t")
@@ -186,12 +149,14 @@ alpha_soil$Management_Stage <- factor(alpha_soil$Management_Stage,
 alpha_soil$Plot_Stage <- paste0(alpha_soil$Plot, "_", alpha_soil$Stage)
 alpha_soil$Plot_Stage <- factor(alpha_soil$Plot_Stage,
                                 levels = Plot_Stage_levels,
+                                labels = Plot_Stage_labels,
                                 ordered = TRUE)
 
-op0 <- box(alpha_soil, "Plot", "Stage", "Plot_Stage", "Shannon") +
+op0 <- box(alpha_soil, "Plot", "Stage", "Plot_Stage", "Shannon", size = 1.8) +
     theme(legend.position = "none",
-          axis.text = element_text(size = 18),
-          axis.text.x = element_text(size = 18))
+          axis.text.x = element_text(size = 12),
+          axis.text.y = element_text(size = 18)) +
+    labs(y = '')
 
 # calculate the significance of alpha diversity
 sig0 <- box_sig(alpha_soil, "Field", "Shannon")
@@ -212,33 +177,9 @@ sig12$FDR <- p.adjust(sig12$Significance, method = "fdr")
 sig12$Sig_FDR <- ifelse(as.numeric(as.character(sig12$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig12, "sig_Oomycetes.txt", quote = F, sep = "\t", row.names = F)
+write.table(sig12, "Figure_s3_sig_Oomycetes.txt", quote = F, sep = "\t", row.names = F)
 
-# Get the intersection of asv and design file
-inter <- intersect(as.character(colnames(asv)), as.character(design$Sample_ID))
-asv <- asv[, colnames(asv) %in% inter]
-design <- design[design$Sample_ID %in% inter, ]
-
-# Bray-Curtis distance
-bc <- as.matrix(parDist(t(asv), method = "bray"))
-des <- design
-dis <- bc
-dmr <- cmdscale(dis, k = 4, eig = T)
-n <- nrow(dis)
-print(n)
-
-## Management + Stage
-op1 <- pcoa(dmr, des, 12, "Plot", "Stage", 2.4, kingdom) +
-    theme(legend.position = "none",
-          axis.text = element_text(size = 18),
-          axis.text.x = element_text(size = 18))
-
-###############################################################################
 ###############################################################################
 ## Output the files
-library(gridExtra)
-
-all_p123 <- grid.arrange(p1, fp1, op1,
-                         p0, fp0, op0,
-                         nrow = 2, ncol = 3)
-ggsave("Figure_1.pdf", all_p123, width = 16, height = 10)
+all <- plot_grid(p0, fp0, op0, ncol = 3, align = "h", labels = 'auto')
+ggsave("Figure_S3.pdf", all, width = 14, height = 4)

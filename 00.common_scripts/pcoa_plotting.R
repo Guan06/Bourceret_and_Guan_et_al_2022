@@ -53,33 +53,30 @@ pcoa <- function(x, des, dim, color, shape, size = 1.2, prefix) {
     color_df <- get_color_df(color)
     shape_df <- get_shape_df(shape)
 
-    points[[color]] <- factor(points[[color]], levels = color_df$group)
-    points[[shape]] <- factor(points[[shape]], levels = shape_df$group)
-
     p <- ggplot(points,
                 aes_string(x = "x", y = "y", color = color, shape = shape)) +
-         geom_point(size = size, alpha = 0.8) +
-         scale_colour_manual(values=as.character(color_df$color)) +
-         scale_shape_manual(values=shape_df$shape) +
-         main_theme +
-         coord_fixed(ratio = 1)
+         geom_point(size = size, alpha = 0.9) +
+         scale_colour_manual(values=color_df) +
+         scale_shape_manual(values=shape_df) +
+         main_theme 
+ #        coord_fixed(ratio = 1)
 
      if (dim == "12") {
         p <- p + labs (x = paste0("PCo1 (", format(eig1, digits = 4), "%)"),
-                       y = paste0("PCo2 (", format(eig2, digits = 4), "%)")) +
-                 ggtitle(paste0(prefix, "_PCo12"))
+                       y = paste0("PCo2 (", format(eig2, digits = 4), "%)")) 
+#                 ggtitle(paste0(prefix, "_PCo12"))
      } else if (dim == "34") {
         p <- p + labs (x = paste0("PCo3 (", format(eig3, digits = 4), "%)"),
-                       y = paste0("PCo4 (", format(eig4, digits = 4), "%)")) +
-                 ggtitle(paste0(prefix, "_PCo34"))
+                       y = paste0("PCo4 (", format(eig4, digits = 4), "%)")) 
+ #                ggtitle(paste0(prefix, "_PCo34"))
      } else if (dim == "13") {
          p <- p + labs (x = paste0("PCo1 (", format(eig1, digits = 4), "%)"),
-                        y = paste0("PCo3 (", format(eig3, digits = 4), "%)")) +
-                 ggtitle(paste0(prefix, "_PCo13"))
+                        y = paste0("PCo3 (", format(eig3, digits = 4), "%)")) 
+#                 ggtitle(paste0(prefix, "_PCo13"))
      } else if (dim == "23") {
          p <- p + labs (x = paste0("PCo2 (", format(eig2, digits = 4), "%)"),
-                        y = paste0("PCo3 (", format(eig3, digits = 4), "%)")) +
-                 ggtitle(paste0(prefix, "_PCo23"))
+                        y = paste0("PCo3 (", format(eig3, digits = 4), "%)")) 
+ #                ggtitle(paste0(prefix, "_PCo23"))
      }
      return(p)
 }

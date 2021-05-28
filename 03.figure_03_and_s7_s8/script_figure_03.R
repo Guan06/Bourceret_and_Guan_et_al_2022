@@ -162,11 +162,6 @@ this_asv_filter <- asv_dis[asv_dis$Compare_Group == "Bulksoil_before_sowing" |
 
 this_asv_filter <- this_asv_filter %>% spread(Compare_Group, Dis_Mean)
 this_asv_filter <- merge(this_asv_filter, design)
-this_asv_filter$Compartment <- factor(this_asv_filter$Compartment,
-                                      levels = c_Com$group)
-this_asv_filter$Stage <- factor(this_asv_filter$Stage,
-                                levels = s_Sta$group)
-this_asv_filter$Compartment_Stage <- factor(this_asv_filter$Compartment_Stage)
 
 ############################################  at the Phylum level
 tax_dis <- c()
@@ -189,17 +184,8 @@ this_tax_filter <- tax_dis[tax_dis$Compare_Group == "Bulksoil_before_sowing" |
                            tax_dis$Compare_Group == "Root_Reproductive", ]
 this_tax_filter <- this_tax_filter %>% spread(Compare_Group, Dis_Mean)
 this_tax_filter <- merge(this_tax_filter, design)
-this_tax_filter$Compartment <- factor(this_tax_filter$Compartment,
-                                      levels = c_Com$group)
-this_tax_filter$Stage <- factor(this_tax_filter$Stage,
-                                levels = s_Sta$group)
-this_tax_filter$Compartment_Stage <- factor(this_tax_filter$Compartment_Stage)
 
 ##########################################  density plot
-greens <- brewer.pal(n = 9, name = "Greens")
-oranges <- brewer.pal(n = 9, name = "Oranges")
-br <- brewer.pal(n = 11, name = "BrBG")
-
 ############## at the ASV level
 ## reduce 2D to 1D by calculating Euclidean distance
 nr <- nrow(this_asv_filter)
@@ -231,11 +217,10 @@ write.table(df_mean, "Figure_3c_ASV_mean.txt",
             quote = F, sep = "\t", row.names = F)
 
 lines_mean <- as.numeric(as.character(df_mean$Mean))
-colors <- c(br[c(1, 2, 4)], oranges[c(6, 3)], greens[c(6, 3)])
 
 p3c_1 <- ggplot(ASV, aes(Distance, fill = Compartment_Stage)) +
         geom_density(alpha = 0.7, size = 0.2, color = "wheat4") +
-        scale_fill_manual(values = colors) +
+        scale_fill_manual(values = c_Com_Sta) +
         main_theme +
         theme(legend.position = "none", axis.title = element_blank()) +
         geom_vline(xintercept = lines_mean, color = colors,
@@ -271,19 +256,20 @@ lines_mean <- as.numeric(as.character(df_mean$Mean))
 
 p3c_2 <- ggplot(TAX, aes(Distance, fill = Compartment_Stage)) +
         geom_density(alpha = 0.7, size = 0.2, color = "wheat4") +
-        scale_fill_manual(values = colors) +
+        scale_fill_manual(values = c_Com_Sta) +
         main_theme +
         theme(legend.position = "none", axis.title = element_blank()) +
         geom_vline(xintercept = lines_mean, color = colors,
                    linetype = "longdash")
 
 ## put together
-p3c <- grid.arrange(p3c_1, p3c_2,
-                    p3c_1, p3c_2,
-                    p3c_1, p3c_2,
-                    nrow = 6, ncol = 1)
-
-p3bc <- grid.arrange(p3b, p3c, nrow = 1, ncol = 2)
+library(cowplot)
+p3c <- plot_grid(p_s7c_1, p_s7c_2,
+                       p_s7c_1, p_s7c_2,
+                       p_s7c_1, p_s7c_2,
+                       nrow = 6, ncol = 1,
+                       align = "v", axis = "l")
+p3bc <- plot_grid(p3b, p3c, nrow = 1, ncol = 2)
 ggsave("Figure_3b_3c.pdf", p3bc, width = 10, height = 5)
 
 ###############################################################################

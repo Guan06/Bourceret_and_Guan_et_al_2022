@@ -28,6 +28,9 @@ order_myc <- c("Vegetative_NK_1_B73",
                   "Reproductive_NPK_1_B73",
                   "Reproductive_CONMIN_1_B73",
                   "Reproductive_BIODYN_1_B73")
+label_myc <- c("V_NK_B73", "V_NPK_B73", "V_CON_B73", "V_BIO_B73",
+               "V_NK_pht1;6", "V_NPK_pht1;6", "V_CON_pht1;6", "V_BIO_pht1;6",
+               "R_NK_B73", "R_NPK_B73", "R_CON_B73", "R_BIO_B73")
 
 myc <- read.table(myc_file, header = T, sep = "\t")
 design <- read.table(design_file, header = T, sep = "\t")
@@ -50,29 +53,36 @@ ra <- merge(glo_ra, design)
 library(dplyr)
 ra_sum <- ra %>% group_by(Stage_Management_Genotype) %>%
     summarise(mean = mean(RA), sd = sd(RA))
+map <- unique(design[, c("Management", "Stage_Management_Genotype")])
+ra_sum <- merge(ra_sum, map)
 
-a <- ggplot(ra_sum) + geom_bar(aes(x = Stage_Management_Genotype, y = mean),
-                              stat = "identity") + main_theme +
-        scale_x_discrete(limits = order_myc) +
+a <- ggplot(ra_sum) +
+    geom_bar(aes(x = Stage_Management_Genotype, y = mean,
+                 color = Management), fill = 'NA',
+            stat = "identity") + main_theme +
+        scale_color_manual(values = c_Man) +
+        scale_x_discrete(limits = order_myc, labels = label_myc) +
+        labs(x = '', y = 'Mean relative abundance') +
+        theme(legend.position = "none",
+              axis.text.x = element_text(angle = 90, vjust = 0.5,
+                                         hjust = 1))
+
+m <- merge(design, myc)
+
+b <- box(m, "Management", "Stage", "Stage_Management_Genotype",
+              "myc_colonization_degree", size = 2) +
+        scale_x_discrete(limits = order_myc, labels = label_myc) +
+        labs(x = '', y = 'Mycorrhizal colonization degree (%)') +
+        scale_shape_manual(values = s_Sta) +
         theme(legend.position = "none",
               axis.text.x = element_blank())
 
-m <- merge(design, myc)
-m <- drop.levels(m)
-m <- m[, c(1:5, 7)]
-
-b <- box(m, "Management", "Stage", "Stage_Management_Genotype",
-              "myc_colonization_degree") +
-        scale_x_discrete(limits = order_myc) +
-        scale_shape_manual(values = c(1, 16)) +
-        theme(legend.position = "none",
-        axis.text.x = element_blank())
-
 ## combine
-library(gridExtra)
+library(cowplot)
 
-s8 <- grid.arrange(b, a, nrow = 2, ncol = 1)
-ggsave("Figure_S8.pdf", s8)
+s8 <- plot_grid(b, a, nrow = 2, ncol = 1, labels = 'auto',
+                align = 'v', axis = 'l', rel_heights = c(1, 1.3))
+ggsave("Figure_S8.pdf", s8, height = 6, width = 6)
 
 lst_Stage <- as.character(unique(m$Stage))
 lst_Management <- as.character(unique(m$Management))
