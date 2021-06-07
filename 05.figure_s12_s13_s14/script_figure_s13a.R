@@ -3,9 +3,10 @@
 library(parallelDist)
 library(scales)
 library(vegan)
+library(ggplot2)
 source("../00.common_scripts/plot_settings.R")
-source("./figure_s10_settings.R")
-source("./cpcoa_functions.R")
+source("../00.common_scripts/cpcoa_functions.R")
+source("./figure_s13_settings.R")
 
 design_file <- "../00.data/design_48.txt"
 design <- read.table(design_file, header = T, sep = "\t")
@@ -64,12 +65,7 @@ meta_plot <- function(x, design) {
     return(p)
 }
 
-biomass_file <- "../00.data/meta_data/biomass_noNA.txt"
-biomass <- read.table(biomass_file, header = T, sep = "\t")
-biomass2 <- biomass[, colnames(biomass) %in% c("Sample_ID",
-                                               "dry.weight.cob",
-                                               "dry.weight.shoot",
-                                               "stem.length",
-                                               "total.leaf.number")]
-p1 <- meta_plot(biomass2, design)
-ggsave("Figure_S11a.pdf", p1, width = 3.5, height = 3)
+lipid_file <- "../00.data/meta_data/lipid_NK_NPK.txt"
+lipid <- read.table(lipid_file, header = T, sep = "\t")
+p2 <- meta_plot(lipid, design)
+ggsave("Figure_S13a.pdf", p2, width = 3.5, height = 3)

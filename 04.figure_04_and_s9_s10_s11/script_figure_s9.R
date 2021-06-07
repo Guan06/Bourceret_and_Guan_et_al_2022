@@ -1,72 +1,69 @@
 #!/biodata/dep_psl/grp_rgo/guan/bin/Rscript
 
-library(parallelDist)
-library(vegan)
-library(gridExtra)
+library(pheatmap)
+library(dplyr)
 source("../00.common_scripts/plot_settings.R")
-source("cpcoa_functions.R")
 
 design_file <- "../00.data/design.txt"
-sugar_file <- "../00.data/meta_data/metabolites_sugar.txt"
+response_file <- "../00.data/meta_data/metabolites_lipid.txt"
 
 design <- read.table(design_file, header = T, sep = "\t")
-design <- design[design$Field == "DEMO", ]
+design <- design[design$Genotype != "5_pht1;6", ]
 
-sugar <- read.table(sugar_file, header = T, sep="\t")
-rownames(sugar) <- sugar$Sample_ID
-sugar <- sugar[, -1]
+des <- design[, c("Sample_ID", "Stage", "Management", "Genotype")]
+des$Group <- paste0(des$Stage, "_", des$Management, "_", des$Genotype)
+rownames(des) <- des$Sample_ID
 
-design <- design[design$Sample_ID %in% rownames(sugar), ]
-glst <- unique(design$Genotype)
+response <- read.table(response_file, header = T, sep="\t")
+rownames(response) <- response$Sample_ID
+response <- response[, -1]
 
-plot_g <- function(g){
-    this_des <- design[design$Genotype == g, ]
-    this_meta <- sugar[rownames(sugar) %in% this_des$Sample_ID, ]
-    this_meta_scale <- apply(this_meta, 2, function(x)
-                       scale(x, center = TRUE, scale = TRUE))
-    rownames(this_meta_scale) <- rownames(this_meta)
-    # Euclidean distance between samples
-    dis <- as.matrix(parDist(as.matrix(this_meta_scale)))
-    
-    capscale.gen <- capscale(dis ~ Management * Stage,
-                             data = this_des, add = F, sqrt.dist = T)
-    perm_anova.gen <- anova.cca(capscale.gen)
-    p.val <- perm_anova.gen[1, 4]
-    var_tbl.gen <- variability_table(capscale.gen)
-    eig <- capscale.gen$CCA$eig
+## for lipid, remove sample with NA
+response <- response[!(is.na(rowSums(response))), ]
 
-    variance <- capscale.gen$CCA$tot.chi / capscale.gen$tot.chi
-    variance <- variance * 100
+des <- des[des$Sample_ID %in% rownames(response), ]
+response <- response[match(rownames(des), rownames(response)), ]
+response$Group <- des$Group
 
-    if (ncol(capscale.gen$CCA$wa) < 2) break
-    points <- data.frame(x = capscale.gen$CCA$wa[, 1],
-                         y = capscale.gen$CCA$wa[, 2])
+res_mean <- as.data.frame(response %>% group_by(Group) %>%
+    summarise(across(everything(), list(mean))))
 
-    this_des <- this_des[match(rownames(points), this_des$Sample_ID), ]
-    points <- cbind(points, this_des)
+rownames(res_mean) <- res_mean$Group
+res_mean <- res_mean[, -1]
+res_mean <- log(res_mean)
 
-    eig1 <- 100 * eig[1] / sum(eig)
-    eig2 <- 100 * eig[2] / sum(eig)
-
-    p <- ggplot(points, aes(x, y, shape = Stage, color = Management)) +
-                geom_point(size = 3, alpha = 0.8) +
-                scale_colour_manual(values = c_Man) +
-                scale_shape_manual(values = s_Sta) +
-                main_theme +
-#                coord_fixed(ratio = 1) +
-                labs(x = paste0("CPCo 1 (", format(eig1, digits = 4), "%)"),
-                     y = paste0("CPCo 2 (", format(eig2, digits = 4), "%)")) +
-                ggtitle(paste0(format(variance, digits = 4),
-                               " %; p = ",
-                               format(p.val, digits = 2))) +
-                theme(legend.position = "none",
-                      plot.title = element_text(size = 14))
+## range normalize the ionomic data
+get_range <- function(x) {
+    (x - min(x)) / (max(x) - min(x))
 }
 
-g1 <- plot_g("1_B73")
-g2 <- plot_g("3_PH207")
-g3 <- plot_g("2_DK105")
-g4 <- plot_g("4_F2")
+res2 <- apply(res_mean, 2, get_range)
+res2 <- t(res2)
 
-all <- grid.arrange(g1, g2, g3, g4, nrow = 1, ncol = 4)
-ggsave("Figure_S9.pdf", all, width = 12, height = 3)
+## for each genotype
+des2 <- unique(des[, c("Group", "Genotype", "Management", "Stage")])
+rownames(des2) <- des2$Group
+des2 <- des2[, -1]
+greens <- brewer.pal(n = 9, name = "Greens")
+c_Gen <- c("1_B73" = set2[3], "2_DK105" = set3[3], "3_PH207" = set2[5],
+           "4_F2" = set3[4])
+my_color = list(
+    Genotype = c_Gen,
+    Management = c_Man,
+    Stage = c("Vegetative" = greens[3], "Reproductive" = greens[6])
+)
+
+rownames(res2) <- unlist(strsplit(rownames(res2), "_"))[seq(1,by = 2,
+                                                            len = nrow(res2))]
+## Sanzo Wasa 004
+## https://sanzo-wada.dmbk.io/combination/004 
+c_isabella <- "#c3a55c"
+c_red_violet <- "#3c00a3"
+cp <- colorRampPalette(c(c_red_violet, "white", c_isabella))(50)
+p_all <- pheatmap(res2,
+#                  color = cp,
+                  cluster_rows = FALSE, show_colnames = FALSE,
+                  annotation_colors = my_color,
+                  annotation_col = des2, fontsize = 5.6)
+
+ggsave("Figure_S9.pdf", p_all, width = 6, height = 5)

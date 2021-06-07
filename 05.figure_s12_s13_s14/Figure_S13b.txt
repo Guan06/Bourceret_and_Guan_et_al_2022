@@ -1,0 +1,42 @@
+
+Call:
+adonis(formula = bc ~ Management * Stage * Genotype, data = this_design,      add = F, by = "margin") 
+
+Permutation: free
+Number of permutations: 999
+
+Terms added sequentially (first to last)
+
+                          Df SumsOfSqs MeanSqs F.Model      R2 Pr(>F)    
+Management                 1    1.9661 1.96609  8.7601 0.13385  0.001 ***
+Stage                      1    1.3906 1.39063  6.1961 0.09467  0.001 ***
+Genotype                   1    0.4909 0.49085  2.1870 0.03342  0.006 ** 
+Management:Stage           1    0.5839 0.58392  2.6017 0.03975  0.003 ** 
+Management:Genotype        1    0.5097 0.50966  2.2708 0.03470  0.003 ** 
+Stage:Genotype             1    0.3567 0.35666  1.5892 0.02428  0.038 *  
+Management:Stage:Genotype  1    0.4137 0.41375  1.8435 0.02817  0.020 *  
+Residuals                 40    8.9774 0.22444         0.61117           
+Total                     47   14.6890                 1.00000           
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Call:
+adonis(formula = bc ~ Stage * Management * Genotype, data = this_design,      add = F, by = "margin") 
+
+Permutation: free
+Number of permutations: 999
+
+Terms added sequentially (first to last)
+
+                          Df SumsOfSqs MeanSqs F.Model      R2 Pr(>F)    
+Stage                      1    2.1440 2.14401 26.0036 0.25542  0.001 ***
+Management                 1    1.3182 1.31817 15.9874 0.15704  0.001 ***
+Genotype                   1    0.2664 0.26637  3.2307 0.03173  0.014 *  
+Stage:Management           1    0.2118 0.21177  2.5685 0.02523  0.036 *  
+Stage:Genotype             1    0.2257 0.22566  2.7369 0.02688  0.024 *  
+Management:Genotype        1    0.3999 0.39989  4.8500 0.04764  0.001 ***
+Stage:Management:Genotype  1    0.5302 0.53020  6.4306 0.06316  0.001 ***
+Residuals                 40    3.2980 0.08245         0.39290           
+Total                     47    8.3941                 1.00000           
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1

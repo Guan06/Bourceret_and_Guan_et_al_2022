@@ -365,11 +365,11 @@ write.table(sig_oom_root, "Figure_s5_sig_oom_root.txt",
 ## combine together
 library(cowplot)
 all <- plot_grid(p1a, p2a, p3a,
+                 p1c, p2c, p3c,
                     p1b, p2b, p3b,
-                    p1c, p2c, p3c,
                     p1d, p2d, p3d,
                     ncol = 3, nrow = 4,
                     align = "v", axis = "l",
-                    rel_heights = c(1, 0.75, 1, 0.75))
+                    rel_heights = c(1, 1, 0.75, 0.75))
 
 ggsave("Figure_S5.pdf", all, width = 16, height = 17)

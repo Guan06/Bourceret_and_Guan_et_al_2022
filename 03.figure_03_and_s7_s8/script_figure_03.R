@@ -126,7 +126,10 @@ dmr <- cmdscale(dis_tax_mat, k = 4, eig = T)
 
 design <- design[match(rownames(dis_tax_mat), design$Sample_ID), ]
 p3b <- pcoa(dmr, design, 12, "Compartment", "Stage", 2.4, "Bacteria") +
-        theme(legend.position = "none")
+        theme(legend.position = "none",
+          axis.text = element_text(size = 18),
+          axis.title.x = element_text(size = 18),
+          axis.title.y = element_text(size = 18))
 
 ###############################################################################
 ## for density plot
@@ -217,6 +220,7 @@ write.table(df_mean, "Figure_3c_ASV_mean.txt",
             quote = F, sep = "\t", row.names = F)
 
 lines_mean <- as.numeric(as.character(df_mean$Mean))
+colors <- c(br[c(1, 2, 4)], oranges[c(6, 3)], greens[c(6, 3)])
 
 p3c_1 <- ggplot(ASV, aes(Distance, fill = Compartment_Stage)) +
         geom_density(alpha = 0.7, size = 0.2, color = "wheat4") +
@@ -264,11 +268,12 @@ p3c_2 <- ggplot(TAX, aes(Distance, fill = Compartment_Stage)) +
 
 ## put together
 library(cowplot)
-p3c <- plot_grid(p_s7c_1, p_s7c_2,
-                       p_s7c_1, p_s7c_2,
-                       p_s7c_1, p_s7c_2,
-                       nrow = 6, ncol = 1,
-                       align = "v", axis = "l")
+p3c <- plot_grid(p3c_1, p3c_2,
+                p3c_1, p3c_2,
+                p3c_1, p3c_2,
+                nrow = 6, ncol = 1,
+                align = "v", axis = "l")
+
 p3bc <- plot_grid(p3b, p3c, nrow = 1, ncol = 2)
 ggsave("Figure_3b_3c.pdf", p3bc, width = 10, height = 5)
 
