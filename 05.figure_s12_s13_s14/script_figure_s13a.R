@@ -30,6 +30,11 @@ meta_plot <- function(x, design) {
 
     capscale.gen <- capscale(bc ~ Genotype * Management * Stage,
                              data = this_design, add = F, sqrt.dist = T)
+
+    ad <- adonis(formula = bc ~  Stage * Genotype * Management,
+            data = this_design, add = F, by = "margin")
+    print(ad)
+
     perm_anova.gen <- anova.cca(capscale.gen)
     p.val <- perm_anova.gen[1, 4]
     var_tbl.gen <- variability_table(capscale.gen)
