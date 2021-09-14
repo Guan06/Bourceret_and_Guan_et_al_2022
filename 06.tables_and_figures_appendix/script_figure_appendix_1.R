@@ -79,7 +79,7 @@ sig_bac_rhi$FDR <- p.adjust(sig_bac_rhi$Significance, method = "fdr")
 sig_bac_rhi$Sig_FDR <- ifelse(as.numeric(as.character(sig_bac_rhi$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig_bac_rhi, "Figure_s5_sig_bac_rhi.txt",
+write.table(sig_bac_rhi, "Figure_appendix_1_sig_bac_rhi.txt",
             quote = F, sep = "\t", row.names = F)
 
 ## For Root samples PCoA plots
@@ -131,7 +131,7 @@ sig_bac_root$FDR <- p.adjust(sig_bac_root$Significance, method = "fdr")
 sig_bac_root$Sig_FDR <- ifelse(as.numeric(as.character(sig_bac_root$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig_bac_root, "Figure_s5_sig_bac_root.txt",
+write.table(sig_bac_root, "Figure_appendix_1_sig_bac_root.txt",
             quote = F, sep = "\t", row.names = F)
 
 ###############################################################################
@@ -191,7 +191,7 @@ sig_fun_rhi$FDR <- p.adjust(sig_fun_rhi$Significance, method = "fdr")
 sig_fun_rhi$Sig_FDR <- ifelse(as.numeric(as.character(sig_fun_rhi$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig_fun_rhi, "Figure_s5_sig_fun_rhi.txt",
+write.table(sig_fun_rhi, "Figure_appendix_1_sig_fun_rhi.txt",
             quote = F, sep = "\t", row.names = F)
 
 ## For Root samples PCoA plots
@@ -244,7 +244,7 @@ sig_fun_root$FDR <- p.adjust(sig_fun_root$Significance, method = "fdr")
 sig_fun_root$Sig_FDR <- ifelse(as.numeric(as.character(sig_fun_root$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig_fun_root, "Figure_s5_sig_fun_root.txt",
+write.table(sig_fun_root, "Figure_appendix_1_sig_fun_root.txt",
             quote = F, sep = "\t", row.names = F)
 
 
@@ -305,7 +305,7 @@ sig_oom_rhi$FDR <- p.adjust(sig_oom_rhi$Significance, method = "fdr")
 sig_oom_rhi$Sig_FDR <- ifelse(as.numeric(as.character(sig_oom_rhi$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig_oom_rhi, "Figure_s5_sig_oom_rhi.txt",
+write.table(sig_oom_rhi, "Figure_appendix_1_sig_oom_rhi.txt",
             quote = F, sep = "\t", row.names = F)
 
 ## For Root samples PCoA plots
@@ -359,7 +359,7 @@ sig_oom_root$FDR <- p.adjust(sig_oom_root$Significance, method = "fdr")
 sig_oom_root$Sig_FDR <- ifelse(as.numeric(as.character(sig_oom_root$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig_oom_root, "Figure_s5_sig_oom_root.txt",
+write.table(sig_oom_root, "Figure_appendix_1_sig_oom_root.txt",
             quote = F, sep = "\t", row.names = F)
 
 ## combine together
@@ -372,4 +372,4 @@ all <- plot_grid(p1a, p2a, p3a,
                     align = "v", axis = "l",
                     rel_heights = c(1, 1, 0.75, 0.75))
 
-ggsave("Figure_S5.pdf", all, width = 16, height = 17)
+ggsave("Figure_appendix_1.pdf", all, width = 16, height = 17)

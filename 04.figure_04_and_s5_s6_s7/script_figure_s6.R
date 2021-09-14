@@ -69,4 +69,4 @@ g3 <- plot_g("2_DK105")
 g4 <- plot_g("4_F2")
 
 all <- grid.arrange(g1, g2, g3, g4, nrow = 1, ncol = 4)
-ggsave("Figure_S10.pdf", all, width = 12, height = 3)
+ggsave("Figure_S6.pdf", all, width = 12, height = 3)

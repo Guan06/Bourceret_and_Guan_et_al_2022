@@ -3,7 +3,7 @@ library(ggplot2)
 library(ggpubr)
 library(gridExtra)
 source("../00.common_scripts/plot_settings.R")
-source("./figure_s13_settings.R")
+source("./figure_05_settings.R")
 
 biomass <- read.table("../00.data/meta_data/biomass_noNA.txt",
                       header = T, sep = "\t")
@@ -37,7 +37,7 @@ for(n in 2 : 5){
               axis.text.x = element_text(colour = "black", angle = 90,
                                          size = 8, hjust = 1))
 
-    pdf <- paste0("Figure_S14bc_" , this_biomass_name, ".pdf")
+    pdf <- paste0("Figure_5d_" , this_biomass_name, ".pdf")
     ggsave(pdf, p1, width = 3, height = 3.75)
 
     sig0 <- box_sig(this_biomass, "Genotype", this_biomass_name)
@@ -73,6 +73,6 @@ for(n in 2 : 5){
     sig_all$FDR <- p.adjust(sig_all$Significance, method = "fdr")
     sig_all$Sig_FDR <- ifelse(as.numeric(as.character(sig_all$FDR)) < 0.05,
                     TRUE, FALSE)
-    write.table(sig_all, paste0("Figure_S14bc_", this_biomass_name, ".txt"), quote = F,
+    write.table(sig_all, paste0("Figure_5d_", this_biomass_name, ".txt"), quote = F,
                 sep = "\t", row.names = F)
 }

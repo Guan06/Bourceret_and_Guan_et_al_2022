@@ -82,7 +82,7 @@ sig_bac_root$FDR <- p.adjust(sig_bac_root$Significance, method = "fdr")
 sig_bac_root$Sig_FDR <- ifelse(as.numeric(as.character(sig_bac_root$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig_bac_root, "Figure_s6_sig_bac_root.txt",
+write.table(sig_bac_root, "Figure_appendix_2_sig_bac_root.txt",
             quote = F, sep = "\t", row.names = F)
 
 ###############################################################################
@@ -146,7 +146,7 @@ sig_fun_root$FDR <- p.adjust(sig_fun_root$Significance, method = "fdr")
 sig_fun_root$Sig_FDR <- ifelse(as.numeric(as.character(sig_fun_root$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig_fun_root, "Figure_s6_sig_fun_root.txt",
+write.table(sig_fun_root, "Figure_appendix_2_sig_fun_root.txt",
             quote = F, sep = "\t", row.names = F)
 
 ###############################################################################
@@ -209,7 +209,7 @@ sig_oom_root$FDR <- p.adjust(sig_oom_root$Significance, method = "fdr")
 sig_oom_root$Sig_FDR <- ifelse(as.numeric(as.character(sig_oom_root$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig_oom_root, "Figure_s6_sig_oom_root.txt",
+write.table(sig_oom_root, "Figure_appendix_2_sig_oom_root.txt",
             quote = F, sep = "\t", row.names = F)
 
 ## combine together
@@ -219,4 +219,4 @@ all <- plot_grid(p1a, p2a, p3a,
         nrow = 2, ncol = 3,
         align = "v", axis = "l",rel_heights = c(1, 0.75))
 
-ggsave("Figure_S6.pdf", all, width = 16, height = 8.5)
+ggsave("Figure_appendix_2.pdf", all, width = 16, height = 8.5)

@@ -10,8 +10,8 @@ bac_lst <- read.table(bac_file, header = F, sep = "\t")
 fun_lst <- read.table(fun_file, header = F, sep = "\t")
 
 ###############################################################################
-im_mse_bac <- read.table("Figure_S11_bac_mse.txt", header = T, sep = "\t")
-im_mse_fun <- read.table("Figure_S11_fun_mse.txt", header = T, sep = "\t")
+im_mse_bac <- read.table("Figure_S7_bac_mse.txt", header = T, sep = "\t")
+im_mse_fun <- read.table("Figure_S7_fun_mse.txt", header = T, sep = "\t")
 
 im_sum_bac <- data.frame(Taxon = rownames(im_mse_bac),
                          Total_MSE = rowSums(im_mse_bac))
@@ -24,9 +24,9 @@ top_bac$Group <- ifelse(top_bac$Taxon %in% bac_lst[, 1], "Stable", "Dynamic")
 top_fun <- im_sum_fun[1:25, ]
 top_fun$Group <- ifelse(top_fun$Taxon %in% fun_lst[, 1], "Stable", "Dynamic")
 
-write.table(top_bac, "Figure_S11_bac_top.txt",
+write.table(top_bac, "Figure_S7_bac_top.txt",
             quote = F, sep = "\t", row.names = F)
-write.table(top_fun, "Figure_S11_fun_top.txt",
+write.table(top_fun, "Figure_S7_fun_top.txt",
             quote = F, sep = "\t", row.names = F)
 
 c_core <- c("Stable" = "salmon", "Dynamic" = "gray64")
@@ -53,4 +53,4 @@ p_b <- ggplot(top_fun, aes(Taxon, Total_MSE)) +
 
 p_ab <- plot_grid(p_a, p_b, nrow = 1)
 
-ggsave("Figure_S11ab.pdf", p_ab, height = 5, width = 7)
+ggsave("Figure_S7ab.pdf", p_ab, height = 5, width = 7)

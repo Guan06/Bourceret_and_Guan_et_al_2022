@@ -23,17 +23,17 @@ design <- design[design$Compartment == "Root", ]
 meta <- read.table(meta_file, header = T, sep="\t")
 
 ## regressor by Random Forest, will take some time
-im_mse_bac <- get_regressor(bac_otu, meta, "Figure_S11_bac")
+im_mse_bac <- get_regressor(bac_otu, meta, "Figure_S7_bac")
 im_mse_bac <- im_mse_bac[order(rowSums(im_mse_bac),
                                decreasing = TRUE), ]
 
-write.table(im_mse_bac, "Figure_S11_bac_mse.txt",
+write.table(im_mse_bac, "Figure_S7_bac_mse.txt",
             quote = F, sep = "\t")
 
 ## the regressor will take long time to run
-im_mse_fun <- get_regressor(fun_otu, meta, "Figure_S11_fun")
+im_mse_fun <- get_regressor(fun_otu, meta, "Figure_S7_fun")
 im_mse_fun <- im_mse_fun[order(rowSums(im_mse_fun),
                                decreasing = TRUE), ]
 
-write.table(im_mse_fun, "Figure_S11_fun_mse.txt",
+write.table(im_mse_fun, "Figure_S7_fun_mse.txt",
             quote = F, sep = "\t")

@@ -66,4 +66,4 @@ p_all <- pheatmap(res2,
                   annotation_colors = my_color,
                   annotation_col = des2, fontsize = 5.6)
 
-ggsave("Figure_S9.pdf", p_all, width = 6, height = 5)
+ggsave("Figure_S5.pdf", p_all, width = 6, height = 5)

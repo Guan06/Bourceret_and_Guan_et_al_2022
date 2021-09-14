@@ -17,8 +17,8 @@ fun_otu <- apply(fun_otu, 2, function(x) x / sum(x))
 
 meta_file <- "../00.data/meta_data/metabolites_lipid.txt"
 meta <- read.table(meta_file, header = T, sep="\t")
-top_bac <- read.table("Figure_S11_bac_top_tax.txt", header = T, sep = "\t")
-top_fun <- read.table("Figure_S11_fun_top_tax.txt", header = T, sep = "\t")
+top_bac <- read.table("Figure_S7_bac_top_tax.txt", header = T, sep = "\t")
+top_fun <- read.table("Figure_S7_fun_top_tax.txt", header = T, sep = "\t")
 top_bac <- top_bac[, 1:6]
 top_fun <- top_fun[, 1:6]
 
@@ -97,8 +97,8 @@ node <- merge(node, node_change)
 
 colnames(net)[1 : 3] <- c("source", "target", "weight")
 colnames(node)[1] <- "id"
-edge_file <- "Figure_S11c_bac_edge.txt"
-node_file <- "Figure_S11c_bac_node.txt"
+edge_file <- "Figure_S7c_bac_edge.txt"
+node_file <- "Figure_S7c_bac_node.txt"
 write.table(net, edge_file, quote = F, sep = "\t", row.names = F)
 write.table(node, node_file, quote = F, sep = "\t", row.names = F)
 
@@ -129,7 +129,7 @@ node <- merge(node, node_change)
 
 colnames(net)[1 : 3] <- c("source", "target", "weight")
 colnames(node)[1] <- "id"
-edge_file <- "Figure_S11c_fun_edge.txt"
-node_file <- "Figure_S11c_fun_node.txt"
+edge_file <- "Figure_S7c_fun_edge.txt"
+node_file <- "Figure_S7c_fun_node.txt"
 write.table(net, edge_file, quote = F, sep = "\t", row.names = F)
 write.table(node, node_file, quote = F, sep = "\t", row.names = F)

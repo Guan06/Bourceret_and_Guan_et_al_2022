@@ -60,7 +60,7 @@ sig12$Sig <- ifelse(sig12$Significance < 0.05, TRUE, FALSE)
 sig12$FDR <- p.adjust(sig12$Significance, method = "fdr")
 sig12$Sig_FDR <- ifelse(as.numeric(as.character(sig12$FDR)) < 0.05,
                         TRUE, FALSE)
-write.table(sig12, "Figure_s3_sig_Bacteria.txt", quote = F, sep = "\t", row.names = F)
+write.table(sig12, "Figure_s3a_sig_Bacteria.txt", quote = F, sep = "\t", row.names = F)
 
 ###############################################################################
 ## For Fungi
@@ -118,7 +118,7 @@ sig12$FDR <- p.adjust(sig12$Significance, method = "fdr")
 sig12$Sig_FDR <- ifelse(as.numeric(as.character(sig12$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig12, "Figure_s3_sig_Fungi.txt", quote = F, sep = "\t", row.names = F)
+write.table(sig12, "Figure_s3a_sig_Fungi.txt", quote = F, sep = "\t", row.names = F)
 
 ###############################################################################
 ## For Oomycetes
@@ -177,9 +177,9 @@ sig12$FDR <- p.adjust(sig12$Significance, method = "fdr")
 sig12$Sig_FDR <- ifelse(as.numeric(as.character(sig12$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig12, "Figure_s3_sig_Oomycetes.txt", quote = F, sep = "\t", row.names = F)
+write.table(sig12, "Figure_s3a_sig_Oomycetes.txt", quote = F, sep = "\t", row.names = F)
 
 ###############################################################################
 ## Output the files
 all <- plot_grid(p0, fp0, op0, ncol = 3, align = "h", labels = 'auto')
-ggsave("Figure_S3.pdf", all, width = 14, height = 4)
+ggsave("Figure_S3a.pdf", all, width = 14, height = 4)

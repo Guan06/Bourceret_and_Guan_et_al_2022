@@ -67,14 +67,14 @@ p_b1 <- pcoa(dmr, des, 12, "Compartment", "Stage", 2.4, kingdom) +
           axis.title.x = element_text(size = 18),
           axis.title.y = element_text(size = 18))
 
-p_s4_a1 <- pcoa(dmr, des, 13, "Compartment", "Stage", 2.4, kingdom) +
+p_s3_b1 <- pcoa(dmr, des, 13, "Compartment", "Stage", 2.4, kingdom) +
     ggtitle('Bacteria') +
     theme(legend.position = "none",
           axis.text = element_text(size = 18),
           axis.title.x = element_text(size = 18),
           axis.title.y = element_text(size = 18))
 
-p_s4_b1 <- pcoa(dmr, des, 34, "Management", "Stage", 2.4, kingdom) +
+p_s3_c1 <- pcoa(dmr, des, 34, "Management", "Stage", 2.4, kingdom) +
     theme(legend.position = "none",
           axis.text = element_text(size = 18),
           axis.title.x = element_text(size = 18),
@@ -142,14 +142,14 @@ p_b2 <- pcoa(dmr, des, 12, "Compartment", "Stage", 2.4, kingdom) +
           axis.title.x = element_text(size = 18),
           axis.title.y = element_text(size = 18))
 
-p_s4_a2 <- pcoa(dmr, des, 13, "Compartment", "Stage", 2.4, kingdom) +
+p_s3_b2 <- pcoa(dmr, des, 13, "Compartment", "Stage", 2.4, kingdom) +
     ggtitle('Fungi') +
     theme(legend.position = "none",
           axis.text = element_text(size = 18),
           axis.title.x = element_text(size = 18),
           axis.title.y = element_text(size = 18))
 
-p_s4_b2 <- pcoa(dmr, des, 34, "Management", "Stage", 2.4, kingdom) +
+p_s3_c2 <- pcoa(dmr, des, 34, "Management", "Stage", 2.4, kingdom) +
     theme(legend.position = "none",
           axis.text = element_text(size = 18),
           axis.title.x = element_text(size = 18),
@@ -215,14 +215,14 @@ p_b3 <- pcoa(dmr, des, 12, "Management", "Stage", 2.4, kingdom) +
           axis.title.x = element_text(size = 18),
           axis.title.y = element_text(size = 18))
 
-p_s4_a3 <- pcoa(dmr, des, 13, "Compartment", "Stage", 2.4, kingdom) +
+p_s3_b3 <- pcoa(dmr, des, 13, "Compartment", "Stage", 2.4, kingdom) +
     ggtitle('Oomycetes') +
     theme(legend.position = "none",
           axis.text = element_text(size = 18),
           axis.title.x = element_text(size = 18),
           axis.title.y = element_text(size = 18))
 
-p_s4_b3 <- pcoa(dmr, des, 34, "Compartment", "Stage", 2.4, kingdom) +
+p_s3_c3 <- pcoa(dmr, des, 34, "Compartment", "Stage", 2.4, kingdom) +
     theme(legend.position = "none",
           axis.text = element_text(size = 18),
           axis.title.x = element_text(size = 18),
@@ -237,7 +237,7 @@ adonis <- read.table("../00.data/adonis.txt", header = T, sep = "\t")
 ## For Bacteria
 adonis$Factor <- factor(adonis$Factor, levels = adonis$Factor)
 
-p_s4_c1 <- ggplot(adonis, aes(x = Factor, y = Bacteria)) + main_theme +
+p_s3_d1 <- ggplot(adonis, aes(x = Factor, y = Bacteria)) + main_theme +
     geom_bar(stat = "identity", fill = "gray61") +
     theme(axis.text.y = element_text(size = 18),
           axis.text.x = element_text(angle = 90, size = 6,
@@ -245,7 +245,7 @@ p_s4_c1 <- ggplot(adonis, aes(x = Factor, y = Bacteria)) + main_theme +
           axis.title.y = element_text(size = 18)) +
     labs(x = "", y = "") 
 ## For Fungi
-p_s4_c2 <- ggplot(adonis, aes(x = Factor, y = Fungi)) + main_theme +
+p_s3_d2 <- ggplot(adonis, aes(x = Factor, y = Fungi)) + main_theme +
     geom_bar(stat = "identity", fill = "gray61") +
     theme(axis.text.y = element_text(size = 18),
           axis.text.x = element_text(angle = 90, size = 6,
@@ -253,7 +253,7 @@ p_s4_c2 <- ggplot(adonis, aes(x = Factor, y = Fungi)) + main_theme +
           axis.title.y = element_text(size = 18)) +
     labs(x = "", y = "")
 ## For Oomycetes
-p_s4_c3 <- ggplot(adonis, aes(x = Factor, y = Oomycetes)) + main_theme +
+p_s3_d3 <- ggplot(adonis, aes(x = Factor, y = Oomycetes)) + main_theme +
     geom_bar(stat = "identity", fill = "gray61") +
     theme(axis.text.y = element_text(size = 18),
           axis.text.x = element_text(angle = 90, size = 6,
@@ -270,9 +270,9 @@ fig_1 <- plot_grid(p_a1, p_a2, p_a3,
 
 ggsave("Figure_1.pdf", fig_1, width = 15, height = 12.5)
 
-fig_s4 <- plot_grid(p_s4_a1, p_s4_a2, p_s4_a3,
-                    p_s4_b1, p_s4_b2, p_s4_b3,
-                    p_s4_c1, p_s4_c2, p_s4_c3,
+fig_s3 <- plot_grid(p_s3_b1, p_s3_b2, p_s3_b3,
+                    p_s3_c1, p_s3_c2, p_s3_c3,
+                    p_s3_d1, p_s3_d2, p_s3_d3,
                     align = "v", axis = "l",
                     ncol = 3, nrow = 3, rel_heights = c(1, 0.95, 0.75))
-ggsave("Figure_S4.pdf", fig_s4, width = 15, height = 12.5)
+ggsave("Figure_S3_b_c_d.pdf", fig_s3, width = 15, height = 12.5)

@@ -18,7 +18,7 @@ kingdom <- "Fungi"
 
 ###############################################################################
 ## For relative abundance histogram
-source("./script_figure_s7_pre.R")
+source("./script_figure_s4_pre.R")
 
 p <- ggplot(data = asv_tax_sum,
              aes(x = Group2, y = x,
@@ -31,7 +31,7 @@ p <- ggplot(data = asv_tax_sum,
                                      size = 4, hjust = 1)) +
     labs(x = "", y = "")
 
-ggsave("Figure_S7a.pdf", p, width = 16, height = 10)
+ggsave("Figure_S4a.pdf", p, width = 16, height = 10)
 
 ###############################################################################
 ## for B and C, phylum based PCoA and density plot
@@ -59,7 +59,7 @@ bc_mat <- as.matrix(bc)
 dmr <- cmdscale(bc_mat, k = 4, eig = T)
 
 design <- design[match(rownames(bc_mat), design$Sample_ID), ]
-p_s7b <- pcoa(dmr, design, 12, "Compartment", "Stage", 2.4, kingdom) +
+p_s4b <- pcoa(dmr, design, 12, "Compartment", "Stage", 2.4, kingdom) +
     theme(legend.position = "none")
 
 ## for density plot
@@ -149,13 +149,13 @@ ASV$Compartment_Stage <- as.character(ASV$Compartment_Stage)
 
 df_mean <- ASV %>% group_by(Compartment_Stage) %>%
     summarise(Mean = mean(Distance))
-write.table(df_mean, "Figure_S7c_ASV_mean.txt",
+write.table(df_mean, "Figure_S4c_ASV_mean.txt",
             quote = F, sep = "\t", row.names = F)
 
 lines_mean <- as.numeric(as.character(df_mean$Mean))
 colors <- c(br[c(1, 2, 4)], oranges[c(6, 3)], greens[c(6, 3)])
 
-p_s7c_1 <- ggplot(ASV, aes(Distance, fill = Compartment_Stage)) +
+p_s4c_1 <- ggplot(ASV, aes(Distance, fill = Compartment_Stage)) +
         geom_density(alpha = 0.7, size = 0.2, color = "wheat4") +
         scale_fill_manual(values = c_Com_Sta) +
         main_theme +
@@ -187,11 +187,11 @@ TAX$Compartment_Stage <- as.character(TAX$Compartment_Stage)
 
 df_mean <- TAX %>% group_by(Compartment_Stage) %>%
     summarise(Mean = mean(Distance))
-write.table(df_mean, "Figure_S7c_TAX_mean.txt",
+write.table(df_mean, "Figure_S4c_TAX_mean.txt",
             quote = F, sep = "\t", row.names = F)
 lines_mean <- as.numeric(as.character(df_mean$Mean))
 
-p_s7c_2 <- ggplot(TAX, aes(Distance, fill = Compartment_Stage)) +
+p_s4c_2 <- ggplot(TAX, aes(Distance, fill = Compartment_Stage)) +
         geom_density(alpha = 0.7, size = 0.2, color = "wheat4") +
         scale_fill_manual(values = c_Com_Sta) +
         main_theme +
@@ -201,14 +201,14 @@ p_s7c_2 <- ggplot(TAX, aes(Distance, fill = Compartment_Stage)) +
 
 ## put together
 library(cowplot)
-p_s7c <- plot_grid(p_s7c_1, p_s7c_2,
-                       p_s7c_1, p_s7c_2,
-                       p_s7c_1, p_s7c_2,
+p_s4c <- plot_grid(p_s4c_1, p_s4c_2,
+                       p_s4c_1, p_s4c_2,
+                       p_s4c_1, p_s4c_2,
                        nrow = 6, ncol = 1,
                        align = "v", axis = "l")
 
-p <- plot_grid(p_s7b, p_s7c, nrow = 1, ncol = 2)
-ggsave("Figure_S7bc.pdf", p, width = 10, height = 5)
+p <- plot_grid(p_s4b, p_s4c, nrow = 1, ncol = 2)
+ggsave("Figure_S4bc.pdf", p, width = 10, height = 5)
 
 ###############################################################################
 ## Statistical test
@@ -235,7 +235,7 @@ sig$FDR <- p.adjust(sig$Significance, method = "fdr")
 sig$Sig_FDR <- ifelse(as.numeric(as.character(sig$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig, "Figure_S7c_ASV_sig.txt", quote = F, sep = "\t", row.names = F)
+write.table(sig, "Figure_S4c_ASV_sig.txt", quote = F, sep = "\t", row.names = F)
 
 sig <- c()
 for (i in 1 : (len -1)) {
@@ -257,4 +257,4 @@ sig$FDR <- p.adjust(sig$Significance, method = "fdr")
 sig$Sig_FDR <- ifelse(as.numeric(as.character(sig$FDR)) < 0.05,
                         TRUE, FALSE)
 
-write.table(sig, "Figure_S7c_TAX_sig.txt", quote = F, sep = "\t", row.names = F)
+write.table(sig, "Figure_S4c_TAX_sig.txt", quote = F, sep = "\t", row.names = F)
